@@ -30,6 +30,10 @@ function SampleNextArrow(props) {
   }
 
 class ProductDetail extends React.Component{
+state={
+    stock : 5
+}
+
     render(){
         var settings = {
             focusOnSelect: true,
@@ -78,16 +82,16 @@ class ProductDetail extends React.Component{
                         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta nulla voluptates, culpa mollitia fuga hic asperiores? Officia commodi corporis sapiente, quia nisi est fugiat quaerat animi sed at laboriosam vero!</p>
                         <select name='size' style={{width:'150px', borderRadius:'5px', height:'30px'}}>
                             <option ref='size' value='0' style={{fontWeight: '600'}}>SHOE SIZE</option>
-                            <option ref='size' value='46'>46</option>
+                            <option ref='size' value='46'>46 </option>
                             <option ref='size' value='47'>47</option>
                             <option ref='size' value='48'>48</option>
                             <option ref='size' value='49'>49</option>
                             <option ref='size' value='50'>50</option>
                         </select>
-                        <span style={{marginLeft: '50px'}}> <span style={{marginRight: '50px', fontWeight: '600', fontSize: '17px'}}>QUANTITY :</span> </span>
-                        <input  type='button' className='btn btn-light mr-2' style={{fontSize: '20px', fontWeight: 'bold'}} value='-' />
-                         <span style={{fontSize: '20px', fontWeight: 'bold'}}>1</span>
-                           <input type='button' style={{fontSize: '20px', fontWeight: 'bold'}} className='btn btn-light ml-2' value='+' />
+                        <span style={{marginLeft: '30px'}}> <span style={{marginRight: '20px', fontWeight: '600', fontSize: '17px'}}>QUANTITY :</span> </span>
+                        <input  type='button' className='btn btn-light mr-2' style={{fontSize: '15px', fontWeight: 'bold'}} value='-' />
+                         <span style={{fontSize: '15px', fontWeight: 'bold'}}>1</span>
+                           <input type='button' style={{fontSize: '15px', fontWeight: 'bold'}} className='btn btn-light ml-2' value='+' />
                             <br />
                         <input type='button' value='ADD TO CART'  className='btn btn-dark mt-4' />
                         

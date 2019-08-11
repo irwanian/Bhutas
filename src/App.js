@@ -7,6 +7,7 @@ import ProductDetail from './pages/ProductDetail';
 import Login from './pages/LoginPage';
 import AdminPage from './pages/Admin';
 import Register from './pages/RegistrationPages';
+import ErrorPage from './pages/ErrorPage';
 
 class App extends React.Component{
   render(){
@@ -20,8 +21,9 @@ class App extends React.Component{
             <Route path='/login' component={Login} />
             <Route path='/registration' component={Register} />
            <Route path='/admin' component={AdminPage} />
-         </Switch>
-      
+           <Route path ='*' component={ErrorPage} />
+         </Switch> 
+
       </div>
     )
   }

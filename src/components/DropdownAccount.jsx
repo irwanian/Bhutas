@@ -15,26 +15,27 @@ class DropdownAccount extends React.Component{
             <div>
                 <Nav className="ml-auto" navbar>
               <UncontrolledDropdown nav  inNavbar>
-                <DropdownToggle nav caret  >
+                <DropdownToggle nav  >
                 <IoIosContact className='personal-account' style={{ fontWeight : 'bold', color : 'white'}} />
                 </DropdownToggle>
                 <div style={{marginRight: '10vw'}} className='account-info'>
                   <DropdownMenu >
                     <Link to='/' style={{textDecoration:'none'}}>
+                      
+                      {/*=======================DISABLE IF USER HASN'T LOGIN============================== */}
                       <DropdownItem>
-                          Option 1
+                          My Profile
                       </DropdownItem>
+                      {/*=======================DISABLE IF USER HASN'T LOGIN============================== */}
+
                     </Link>
                     <DropdownItem>
-                      Option 2
-                    </DropdownItem>
-                    <DropdownItem>
-                      <span>Login</span> / <span>Register</span>
+                      My Wishlist
                     </DropdownItem>
                     <DropdownItem divider />
                   <Link>
-                    <DropdownItem>
-                      Reset
+                  <DropdownItem>
+                      <span>Login</span> / <span>Register</span>
                     </DropdownItem>
                   </Link>
                   </DropdownMenu>

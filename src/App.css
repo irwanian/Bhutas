@@ -1,4 +1,7 @@
 /* ===========CARD CIRCLE START============ */
+.fire-burn{
+    width: 55px
+}
 
 .circle {
     width: 40px;
@@ -62,6 +65,18 @@
     font-size: 21px
 }
 
+.search-icon{
+    color: white;
+     position: fixed;
+     font-size:26px;
+      top: 3.3%;
+       right:14%;
+       z-index: 3
+}
+
+.search-icon:hover{
+    cursor: pointer;
+}
 .personal-account{
     font-size: 35px !important
 }
@@ -74,14 +89,14 @@
     color : white;
     position: fixed;
     z-index: 3;
-    right: 2.5%;
+    right: 5%;
     top: 3%
 }
 .cart-filling{
     background-color: red;
-    position: absolute;
+    position: fixed;
     top: 1.5%;
-    right: 2%; 
+    right: 4.5%; 
     width: 22px;
     height: 22px;
     border-radius: 50%; 
@@ -93,16 +108,12 @@
 /* ===========CART END============ */
 
 
-@media only screen and (max-width: 1024px){
-    .brand-list{
-        font-size: 20px
-    }
-    .category-list{
-        font-size: 20px
-    }   
+.jumbo-pic{
+    height: 700px;
+    cursor: pointer;
 }
 
-@media only screen and (max-width: 992px){
+@media only screen and (max-width: 1199px){
     .circle2{
         width: 32px;
         height: 32px;
@@ -111,7 +122,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 125% ;
+        left: 97% ;
         top: 30%;
         font-size: 22px;
         font-weight: bold;
@@ -127,7 +138,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 125%;
+        left: 97%;
         top: 56%;
         font-size: 22px;
         font-weight: bold;
@@ -136,9 +147,64 @@
     }
 }
 
+@media only screen and (max-width: 1024px){
+    .brand-list{
+        font-size: 20px
+    }
+    .category-list{
+        font-size: 20px
+    }   
+}
+
+@media only screen and (max-width: 993px){
+    .circle2{
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        line-height: 32px;
+        text-align: center !important;
+        background-color: #6699;
+        position: absolute;
+        left: 100% ;
+        top: 30%;
+        font-size: 22px;
+        font-weight: bold;
+        color: white;
+        cursor : pointer;
+    }
+
+    .circle{
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        line-height: 32px;
+        text-align: center !important;
+        background-color: #6699;
+        position: absolute;
+        left: 100%;
+        top: 56%;
+        font-size: 22px;
+        font-weight: bold;
+        color: white;
+        cursor : pointer;
+    }
+    .jumbo-pic{
+        height: 500px;
+        margin-top: 10px
+    }
+    .hot-item{
+        width: 200px !important;
+        margin-right: 100px !important
+    }
+}
+
 @media only screen and (max-width: 768px){
 /* ===========LEFT NAV START============ */
     
+    .jumbo-pic{
+        height: 500px;
+        margin-top: 10px
+    }
     .main-Brand{
         font-size: 26px;
         color: white !important;
@@ -155,6 +221,11 @@
         font-size: 18px
     }
 
+    .search-icon{
+        position: fixed;
+        right:30%
+    }
+
     .personal-account{
         font-size: 28px !important;
     }
@@ -167,7 +238,7 @@
 /* ===========CART START============ */
 
 .cart-icon{
-    position: absolute;
+    position: fixed;
         top: 3%;
         right: 16%;
         font-size: 30px !important;
@@ -175,7 +246,7 @@
     }
     .cart-filling{
         background-color: red;
-        position: absolute;
+        position: fixed;
         top: 2%;
         right: 15%; 
         width: 19px;
@@ -197,7 +268,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 46%;
+        left: 36%;
         top: 30%;
         font-size: 22px;
         font-weight: bold;
@@ -213,7 +284,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 46%;
+        left: 36%;
         top: 56%;
         font-size: 22px;
         font-weight: bold;
@@ -230,6 +301,10 @@
     .brand-list{
         font-size: 16px
     }
+    .jumbo-pic{
+        height: 300px;
+        margin-top: 10px
+    }
     .category-list{
         font-size: 16px
     }
@@ -245,14 +320,14 @@
 /* ===========CART START============ */
 
     .cart-icon{
-        position: absolute;
+        position: fixed;
         top: 3%;
         right: 18%;
         font-size: 28px !important;
     }
     .cart-filling{
         background-color: red;
-        position: absolute;
+        position: fixed;
         top: 2%;
         right: 17%; 
         width: 17px;
@@ -277,7 +352,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 43%;
+        left: 35%;
         top: 56%;
         font-size: 22px;
         font-weight: bold;
@@ -293,7 +368,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 43%;
+        left: 35%;
         top: 30%;
         font-size: 22px;
         font-weight: bold;
@@ -311,7 +386,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 48%;
+        left: 39.5%;
         top: 56%;
         font-size: 22px;
         font-weight: bold;
@@ -326,7 +401,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 48%;
+        left: 39.5%;
         top: 30%;
         font-size: 22px;
         font-weight: bold;
@@ -345,7 +420,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 54%;
+        left: 43%;
         top: 56%;
         font-size: 22px;
         font-weight: bold;
@@ -361,12 +436,27 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 54%;
+        left: 43%;
         top: 30%;
         font-size: 22px;
         font-weight: bold;
         color: white;
         cursor : pointer;
+    }
+}
+
+@media only screen and (max-width : 450px){
+    .fire-burn{
+        width: 40px
+    }
+}
+
+@media only screen and (max-width : 435px){
+    .fire-burn{
+        width: 40px
+    }
+    .hot-text{
+        font-size: 34px
     }
 }
 
@@ -379,7 +469,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 59%;
+        left: 50%;
         top: 56%;
         font-size: 22px;
         font-weight: bold;
@@ -395,12 +485,15 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 59%;
+        left: 50%;
         top: 30%;
         font-size: 22px;
         font-weight: bold;
         color: white;
         cursor : pointer;
+    }
+    .fire-burn{
+        width: 40px
     }
 }
 
@@ -413,7 +506,7 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 66%;
+        left: 53%;
         top: 56%;
         font-size: 22px;
         font-weight: bold;
@@ -429,11 +522,68 @@
         text-align: center !important;
         background-color: #6699;
         position: absolute;
-        left: 66%;
+        left: 53%;
         top: 30%;
         font-size: 22px;
         font-weight: bold;
         color: white;
         cursor : pointer;
+    }
+    .hot-text{
+        font-size: 34px
+    }
+    .fire-burn{
+        width: 40px
+    }
+}
+
+@media only screen and (max-width : 376px){
+    .fire-burn{
+        width: 40px
+    }
+    .hot-text{
+        font-size: 28px
+    }
+}
+
+
+@media only screen and (max-width : 336px){
+    .circle{
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        line-height: 32px;
+        text-align: center !important;
+        background-color: #6699;
+        position: absolute;
+        left: 56%;
+        top: 56%;
+        font-size: 22px;
+        font-weight: bold;
+        color: white;
+        cursor : pointer;
+    }
+
+    .circle2{
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        line-height: 32px;
+        text-align: center !important;
+        background-color: #6699;
+        position: absolute;
+        left: 56%;
+        top: 30%;
+        font-size: 22px;
+        font-weight: bold;
+        color: white;
+        cursor : pointer;
+    }
+    
+    .hot-text{
+        font-size: 29px
+    }
+    .fire-burn{
+        width: 40px
     }
 }

@@ -13,7 +13,7 @@ import {
 import Categories from './DropdownCategories';
 import Brands from './DropdownBrands';
 import AccountInfo from './DropdownAccount';
-
+import {GoSearch} from 'react-icons/go'
 
 class Header extends React.Component {
   
@@ -27,6 +27,8 @@ class Header extends React.Component {
   render() {
     return (
       <div>
+        <GoSearch className='search-icon' />  
+        {/* ======================DISABLE IF USER HASN'T LOGIN================================ */}
         <Link>
           <IoIosCart className='flex-center cart-icon'   />
             {/* ==================Cart-Content-Start============= */}
@@ -35,7 +37,10 @@ class Header extends React.Component {
           }
             {/* ==================Cart-Content-End================ */}
         </Link>
+        {/*=======================DISABLE IF USER HASN'T LOGIN============================== */}
+
         <Navbar color="dark" dark expand="md" style={{position:'fixed', zIndex:'1', width: '100%'}} >
+        
         {/*================================= Brand Start ========================================*/}
           <Link to='/'>
           <NavbarBrand className='main-Brand' >BHUTAS</NavbarBrand>
@@ -63,6 +68,7 @@ class Header extends React.Component {
         
         {/* ============================== USER SECTION START======================================= */}
         <div className='ml-auto'>
+        
             <AccountInfo   />
         </div>
           </Collapse>
