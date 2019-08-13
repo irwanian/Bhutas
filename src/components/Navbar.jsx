@@ -29,7 +29,7 @@ class Header extends React.Component {
       <div>
         <GoSearch className='search-icon' />  
         {/* ======================DISABLE IF USER HASN'T LOGIN================================ */}
-        <Link>
+        <Link to='mycart'>
           <IoIosCart className='flex-center cart-icon'   />
             {/* ==================Cart-Content-Start============= */}
             {this.state.cartAddOn < 1 ? null :
