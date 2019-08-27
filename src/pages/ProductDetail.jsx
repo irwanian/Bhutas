@@ -45,10 +45,10 @@ state={
             nextArrow : <SampleNextArrow />,
             prevArrow : <SamplePrevArrow />,
             centerMode : true,
-
+            
           };
         return(
-            <div style={{paddingTop : '80px'}} className='container'>
+            <div  className='container'>
                 <div className='row mt-lg-5'>
                     <div className='col-md-6'>
                         <img src='https://i.imgur.com/8dV50nZ.jpg' className='img-fluid' alt='frog' style={{width :'100%', height:'466px', border : '1.5px solid blue', marginBottom:'20px'}} />

@@ -27,6 +27,7 @@ class Header extends React.Component {
   render() {
     return (
       <div>
+        <input className='search-input bg-transparent' type='text' />
         <GoSearch className='search-icon' />  
         {/* ======================DISABLE IF USER HASN'T LOGIN================================ */}
         <Link to='mycart'>

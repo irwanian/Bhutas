@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-table, th,tr, td{
+tr{
   border: 1px solid black;
   border-collapse: collapse;
   padding: 15px;

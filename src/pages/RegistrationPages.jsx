@@ -16,9 +16,9 @@ class Register extends React.Component{
         return(
             <div className="container">
                 <div className='row justify-content-center'>
-                    <div className='mt-5' >
+                    <div  >
                     <h2 style={{marginTop: '70px', paddingTop : '80px'}}>Registration Form</h2>
-                    <Card  style={{marginTop : '30px', width : '350px', height : '530px'}} >
+                    <Card  style={{marginTop : '30px', width : '350px', height : '530px', marginBottom : '50px'}} >
                             <div className='text-center' >
                                 <div>
                                     <input className='' style={{marginTop : '100px',border: '1px solid grey',textAlign: 'center', borderRadius : '25px'}}
@@ -40,7 +40,7 @@ class Register extends React.Component{
                                 {/* ERROR MESSAGE START */}
                                 
                             {this.state.errorMessage !== '' ?
-                                    <div className='alert alert-danger mt-5' style={{borderRadius : '25px'}}>{this.state.errorMessage}</div>
+                                    <div className='alert alert-danger mt-5' style={{borderRadius : '7px'}}>{this.state.errorMessage}</div>
                                     : null    
                                 }
                                 {/* ERROR MESSAGE END */}

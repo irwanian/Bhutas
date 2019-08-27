@@ -4,19 +4,19 @@ class Cart extends React.Component {
     render(){
         return(
             <div className='container'>
-                <div className='text-center' style={{paddingTop : '150px'}}>
+                <div className='text-center' style={{paddingTop : '100px'}}>
                     <h1 style={{fontWeight : 'bolder'}}>
                         Your Cart 
                      </h1>  
                 </div>
                 {/*===========================TABLE SECTION============================  */}
                 <div className='row justify-content-center'>
-                    <table className='text-center mt-xl-5'>
+                    <table className='text-center mt-5'>
                         <thead>
                             <tr>
                                 <th>No.</th>
                                 <th> Product </th>
-                                <th>Image</th>
+                                <th>Description</th>
                                 <th>Quantity</th>
                                 <th>Weight</th>
                                 <th>Price</th>
@@ -26,6 +26,8 @@ class Cart extends React.Component {
                         <tbody>
                             <tr>
                                 <td>1</td>
+                                <td><img src='https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/112/0711231_PE728076_S3.jpg' 
+                                alt='keresek' width='95px' /> </td>
                                 <td>
                                     <div>
                                         <h5>Nama Produk</h5>
@@ -37,8 +39,26 @@ class Cart extends React.Component {
                                         size berapa
                                     </div>
                                 </td>
+                                <td>2</td>
+                                <td> 600 gr </td>
+                                <td>Rp. 30.000</td>
+                            </tr>
+
+                            <tr>
+                                <td>1</td>
                                 <td><img src='https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/112/0711231_PE728076_S3.jpg' 
-                                alt='keresek' width='150px' /> </td>
+                                alt='keresek' width='95px' /> </td>
+                                <td>
+                                    <div>
+                                        <h5>Nama Produk</h5>
+                                    </div>
+                                    <div style={{paddingTop:'5px'}}>
+                                        Ratingnya
+                                    </div>
+                                    <div style={{paddingTop:'3.5px'}}>
+                                        size berapa
+                                    </div>
+                                </td>
                                 <td>2</td>
                                 <td> 600 gr </td>
                                 <td>Rp. 30.000</td>
