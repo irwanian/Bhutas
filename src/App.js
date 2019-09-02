@@ -11,6 +11,7 @@ import CartPage from './pages/CartPage'
 import ErrorPage from './pages/ErrorPage';
 import ProductUpload from './Admin Pages/ProductUploader';
 import ProductShowcase from './pages/ProductShowcase';
+import AddNewBrand from './Admin Pages/AddNewBrands';
 
 class App extends React.Component{
   render(){
@@ -26,6 +27,7 @@ class App extends React.Component{
             <Route path='/login' component={Login} />
             <Route path='/registration' component={Register} />
             <Route path='/admin' component={AdminPage} />
+            <Route path='/addnewbrand' component={AddNewBrand} />
             <Route path='/uploadproduct' component={ProductUpload} />
             <Route path='/mycart' component={CartPage} />
             <Route path ='*' component={ErrorPage} />

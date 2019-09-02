@@ -8,12 +8,16 @@ import {
   NavItem,
   NavLink,
 } from 'reactstrap'
-  import {Link} from 'react-router-dom'
+  import {Link, Redirect} from 'react-router-dom'
   import {IoIosCart} from 'react-icons/io'
 import Categories from './DropdownCategories';
 import Brands from './DropdownBrands';
 import AccountInfo from './DropdownAccount';
 import {GoSearch} from 'react-icons/go'
+import { connect } from 'react-redux'
+import { customerSearching, getSearchResults } from '../Actions'
+import Axios from 'axios';
+import { API_URL } from '../Helpers/API_URL';
 
 class Header extends React.Component {
   
@@ -24,11 +28,16 @@ class Header extends React.Component {
   toggle =()=> {
     this.setState({isOpen: !this.state.isOpen});
   }
+
   render() {
     return (
       <div>
-        <input className='search-input bg-transparent' type='text' />
-        <GoSearch className='search-icon' />  
+        <input ref='searchInput' onChange={(e)=> this.props.customerSearching(e.target.value)}
+          className='search-input bg-transparent' type='text' />
+        
+        <Link to={'/products?searching=' + this.props.search}>
+          <GoSearch className='search-icon' />  
+        </Link>
         {/* ======================DISABLE IF USER HASN'T LOGIN================================ */}
         <Link to='mycart'>
           <IoIosCart className='flex-center cart-icon'   />
@@ -61,7 +70,14 @@ class Header extends React.Component {
           <Link style={{textDecoration:'none'}}>
             <Nav>
               <NavItem>
-                <NavLink className='on-sale' style={{cursor: 'pointer', borderRadius : '5px', color:'white', backgroundColor: 'red',fontWeight: '600'}}>SALE</NavLink>
+                <Link style={{textDecoration: 'none'}} to='/products?onsale=1' >
+                  <NavLink  style={{cursor: 'pointer',
+                            borderRadius : '5px',
+                            color:'white',
+                            backgroundColor: 'red',
+                            fontWeight: '600'}}
+                            className='on-sale'>SALE</NavLink>
+                </Link>
               </NavItem>
             </Nav>
           </Link>
@@ -82,5 +98,11 @@ class Header extends React.Component {
   }
 }
 
+const mapStateToProps = ({customer}) => {
+  return {
+      search: customer.searchInput,
+      loading: customer.loading
+  }
+}
 
-export default Header
+export default connect(mapStateToProps, { customerSearching, getSearchResults })(Header)

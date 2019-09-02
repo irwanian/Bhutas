@@ -17,3 +17,9 @@ tr{
   border-collapse: collapse;
   padding: 15px;
 }
+
+.table-brand, table, thead, tr, td, tfoot{
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 20px
+}

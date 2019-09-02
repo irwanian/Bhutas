@@ -1,8 +1,12 @@
-import React, {Component} from 'react'
-import {CustomInput} from 'reactstrap'
+import React, { Component } from 'react'
+import { CustomInput } from 'reactstrap'
+import Axios from 'axios'
 import SidePanel from './AdminSidePanel';
+import { API_URL } from '../Helpers/API_URL'
 
 class ProductUpload extends Component {
+    
+
     render(){
         return(
            <div className='bg-light row'>

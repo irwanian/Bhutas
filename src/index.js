@@ -1,23 +1,23 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
-import {BrowserRouter} from 'react-router-dom'
-import {createStore, applyMiddleware} from 'redux'
-import ReduxThunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-// import Reducer from './Reducers'
+import { BrowserRouter } from 'react-router-dom';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+import reducer from './Reducers';
 
-// const store = createStore(Reducer, {}, applyMiddleware(ReduxThunk))
+const stores = createStore(reducer, {}, applyMiddleware(ReduxThunk))
 
 ReactDOM.render(
-                // <Provider store={store}>
+                <Provider store={stores}>
                     <BrowserRouter>
                         <App />
                     </BrowserRouter>
-                // </Provider>    
+                 </Provider>    
                 
                 , document.getElementById('root'));
 

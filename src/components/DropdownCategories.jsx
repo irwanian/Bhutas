@@ -7,7 +7,6 @@ import {
     DropdownItem } from 'reactstrap'
 import Axios from 'axios'
 import { API_URL } from '../Helpers/API_URL';
-import { Link } from 'react-router-dom'
 
 class Categories extends React.Component{
    
@@ -28,9 +27,8 @@ class Categories extends React.Component{
     renderListCategories = () => {
         return this.state.listCategories.map((val) => {
             return (
-                <Link to={'/products?id=' + val.id}>
-                    <DropdownItem>{val.categoryname.toUpperCase()}</DropdownItem>
-                </Link>
+                    <DropdownItem href={'/products?categories=' + val.id}
+                     style={{fontWeight: 'bolder'}} >{val.categoryname.toUpperCase()}</DropdownItem>
             )
         })
     }

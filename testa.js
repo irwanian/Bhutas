@@ -1,1 +1,3 @@
-console.log([[4],[5]].flat())
+var name = 'astaga'
+
+console.log(name.split(' ')[0])
