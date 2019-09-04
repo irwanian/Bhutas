@@ -26,7 +26,7 @@ class Brands extends React.Component{
     renderListBrands = () => {
         return this.state.listBrands.map((val) => {
             return (
-                    <DropdownItem  href={'/products?brands=' + val.id}>
+                    <DropdownItem key={val.id}  href={'/products?brands=' + val.id}>
                      <div className='row justify-content-between' >
                         <span style={{fontWeight: 'bolder'}}>{val.brandname.toUpperCase()}</span> 
                         <span className='flex'><img width={45} height={40} src={API_URL + val.image} alt={val.brandname + ' Logo'} /></span>

@@ -5,13 +5,14 @@ import Header from './components/Navbar';
 import HomePage from './pages/HomePage';
 import ProductDetail from './pages/ProductDetail';
 import Login from './pages/LoginPage';
-import AdminPage from './Admin Pages/Admin';
+import AdminPage from './AdminPages/Admin';
 import Register from './pages/RegistrationPages';
 import CartPage from './pages/CartPage'
 import ErrorPage from './pages/ErrorPage';
-import ProductUpload from './Admin Pages/ProductUploader';
+import ProductUpload from './AdminPages/ProductUploader';
 import ProductShowcase from './pages/ProductShowcase';
-import AddNewBrand from './Admin Pages/AddNewBrands';
+import AddNewBrand from './AdminPages/AddNewBrands';
+import CategoryManagement from './AdminPages/CategoryManagement'
 
 class App extends React.Component{
   render(){
@@ -27,6 +28,7 @@ class App extends React.Component{
             <Route path='/login' component={Login} />
             <Route path='/registration' component={Register} />
             <Route path='/admin' component={AdminPage} />
+            <Route path='/categorymanagement' component={CategoryManagement} />
             <Route path='/addnewbrand' component={AddNewBrand} />
             <Route path='/uploadproduct' component={ProductUpload} />
             <Route path='/mycart' component={CartPage} />

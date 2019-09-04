@@ -1,18 +1,20 @@
 import React from 'react'
 import {Card} from 'reactstrap'
-import {Link} from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { emailLoginChanged, passwordLoginChanged, loginUser, logoutUser } from '../Actions'
 
 class Login extends React.Component{
     
-           state = {
-               errorMessage : ''
-            }
-    
+    onBtnLoginClick = () => {
+        const { loginUser, email, password } = this.props
+        console.log(email, password);
+        
+        loginUser({ email, password })
+    }
 
     
     render(){
-        
-    
         
         return(
             <div className='' style={{  
@@ -29,22 +31,22 @@ class Login extends React.Component{
                     <h2  className='text-center pt-4'>LOGIN</h2>                            
                             <div className='text-center' >
                                 <div>
-                                    <input className='mt-5' style={{width: '400px', height: '40px', border: '1px solid grey',outline: 'none',paddingLeft:'10px', borderRadius : '25px'}}
+                                    <input onChange={(e)=> this.props.emailLoginChanged(e.target.value)} className='mt-5' style={{width: '400px', height: '40px', border: '1px solid grey',outline: 'none',paddingLeft:'10px', borderRadius : '25px'}}
                                     type='text' placeholder='email address' ref='email' />
                                 </div>
                                 <div>
-                                    <input className='mt-4' style={{width: '400px', height: '40px', border: '1px solid grey',outline: 'none',paddingLeft:'10px', borderRadius : '25px'}}
+                                    <input onChange={(e)=> this.props.passwordLoginChanged(e.target.value)} className='mt-4' style={{width: '400px', height: '40px', border: '1px solid grey',outline: 'none',paddingLeft:'10px', borderRadius : '25px'}}
                                     type='password' placeholder='Password' ref='pass' />
                                 </div>
                                 
-                                {/* ERROR MESSAGE START */}
+                                {/* ERROR MESSAGE OR LOGIN BUTTON */}
                                 
-                            {this.state.errorMessage !== '' ?
-                                    <div className='alert alert-danger mt-5' style={{borderRadius : '7px'}}>{this.state.errorMessage}</div>
-                                    : null    
+                            {this.props.error !== '' ?
+                                    <div className='alert alert-danger mt-5' style={{borderRadius : '7px'}}>{this.props.error}</div>
+                                    : null
                                 }
-                                {/* ERROR MESSAGE END */}
-                                <input type='button' className='btn btn-dark mt-4 mb-3' value='LOGIN' />
+
+                                <input type='button' onClick={this.onBtnLoginClick} className='btn btn-dark mt-4 mb-3' value='LOGIN' />
                             </div>
                             <div className='pb-3' >
                                 New to Bhutas? 
@@ -65,4 +67,13 @@ class Login extends React.Component{
 
 }
 
-export default Login
+const mapStateToProps = ({ auth }) => {
+    return {
+        email: auth.email,
+        password: auth.password,
+        loading: auth.loading,
+        error: auth.error
+    }
+}
+
+export default connect(mapStateToProps, { logoutUser, loginUser, emailLoginChanged, passwordLoginChanged })(Login)

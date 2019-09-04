@@ -27,7 +27,7 @@ class Categories extends React.Component{
     renderListCategories = () => {
         return this.state.listCategories.map((val) => {
             return (
-                    <DropdownItem href={'/products?categories=' + val.id}
+                    <DropdownItem key={val.id} href={'/products?categories=' + val.id}
                      style={{fontWeight: 'bolder'}} >{val.categoryname.toUpperCase()}</DropdownItem>
             )
         })

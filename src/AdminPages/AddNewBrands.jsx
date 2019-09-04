@@ -22,6 +22,7 @@ class AddNewBrand extends React.Component {
         Axios.get(API_URL + '/brands/allbrands')
         .then((res) => {
             this.setState({brandLists: res.data})
+            console.log(this.state.brandLists)
         })
         .catch((err) => {
             console.log(err);
@@ -72,6 +73,7 @@ class AddNewBrand extends React.Component {
             .then((res)=>{
                 console.log(id);
                 this.setState({brandLists: res.data, errorMessage: '' ,successMessage: 'Data Successfully Deleted'})
+                console.log(res.data)
             })
             .catch((err)=>{
                 console.log(err);
@@ -96,6 +98,7 @@ class AddNewBrand extends React.Component {
                 Axios.put(API_URL + '/brands/editbrands/' + id, formData, headers)
                 .then((res)=>{
                         this.setState({brandLists : res.data})
+                        console.log(res.data)
                     })
                 .catch((err)=>{
                     console.log(err);
@@ -124,6 +127,7 @@ class AddNewBrand extends React.Component {
                 Axios.post(API_URL + '/brands/addbrands', formData, headers)
                 .then((res)=>{
                         this.setState({brandLists : res.data})
+                        console.log(res.data)
                     })
                 .catch((err)=>{
                     console.log(err);
