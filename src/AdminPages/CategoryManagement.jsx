@@ -46,7 +46,7 @@ class CategoryManagement extends React.Component {
             Axios.delete(API_URL + '/categories/deletecategories/' + id)
             .then((res)=>{
                 console.log(id);
-                this.setState({categoryLists: res, errorMessage: '' ,successMessage: 'Data Successfully Deleted'})
+                this.setState({categoryLists: res.data, errorMessage: '' ,successMessage: 'Data Successfully Deleted'})
                 console.log(this.state.categoryLists)
             })
             .catch((err)=>{
@@ -63,7 +63,7 @@ class CategoryManagement extends React.Component {
 
         Axios.put(API_URL + '/categories/editcategories/' + id, data)
         .then((res)=>{
-                this.setState({ categoryLists : res })
+                this.setState({ categoryLists : res.data })
             })
         .catch((err)=>{
             console.log(this.state.categoryLists)
@@ -82,7 +82,7 @@ class CategoryManagement extends React.Component {
 
                 Axios.post(API_URL + '/categories/addcategories', data)
             .then((res)=>{
-                this.setState({categoryLists : res})
+                this.setState({categoryLists : res.data})
                 })
             .catch((err)=>{
                 console.log(this.state.categoryLists)

@@ -68,13 +68,14 @@ class ProductUpload extends Component {
         })
     }
 
-    onUploadimageFile = (e) => {
+    onUploadImageFile = (e) => {
         console.log(e.target.files[0]);
         
         var file = e.target.files[0]
         
         if(file){
             this.setState({ imageFileName : file.name ,addimageFile : file})
+            console.log(this.state.addImageFile)
         }else{
             this.setState({imageFileName : 'Select Product Image...', addimageFile : undefined})
         };
@@ -95,22 +96,17 @@ class ProductUpload extends Component {
             description: this.refs.description.value,
             brand_id: this.state.selectBrand,
             category_id: this.state.selectCategory,
-            image: this.state.addImageFile  
+            image: this.state.addImageFile,
+            size46: Number(this.refs.size46.value),
+            size47: Number(this.refs.size47.value),
+            size48: Number(this.refs.size48.value),
+            size49: Number(this.refs.size49.value),
+            size50: Number(this.refs.size50.value) 
+                      
         }
 
-        formData.append('image', this.state.addBrandLogo)
+        formData.append('image', this.state.addImageFile)
         formData.append('data', JSON.stringify(productData))
-
-        // var stockData = {
-        //     size_num : [
-        //         { 46: this.refs.size46.value },
-        //         { 47: this.refs.size47.value },
-        //         { 48: this.refs.size48.value },
-        //         { 49: this.refs.size49.value },
-        //         { 50: this.refs.size50.value }
-        //     ],
-        //     stock: 
-        // }
 
         Axios.post(API_URL + '/products/addproduct', formData, headers )
         .then((res)=> {
@@ -201,7 +197,7 @@ class ProductUpload extends Component {
                     </div>
                     <div >
                         <p className='mb-xl-3'>IMAGE UPLOAD</p>
-                        <CustomInput label={this.state.imageFileName} onChange={this.onUploadimageFile} className='mb-3' type='file'/>
+                        <CustomInput label={this.state.imageFileName} onChange={this.onUploadImageFile} className='mb-3' type='file'/>
                     </div>
                 </form>
                 <input onClick={this.onBtnUploadClick} style={{position: 'relative', left: '83%', marginBottom: '70px'}} type="button" className='btn btn-dark' value='ADD PRODUCT' />
