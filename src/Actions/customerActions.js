@@ -1,4 +1,4 @@
-import { SEARCH_BOX_CHANGE } from "./Types";
+import { SEARCH_BOX_CHANGE, ADD, REDUCE } from "./Types";
 
 
 export const customerSearching = (text) => {
@@ -8,4 +8,16 @@ export const customerSearching = (text) => {
     }
 }
 
+export const addQuantity = () => {
+    return{
+        type: ADD
+    }
+}
+
+
+export const reduceQuantity = () => {
+    return {
+        type: REDUCE
+    }
+}
 

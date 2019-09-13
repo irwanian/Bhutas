@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import Axios from 'axios'
-import { API_URL } from '../Helpers/API_URL';
-import {GiNestedHearts} from 'react-icons/gi'
-import {FaCartPlus} from 'react-icons/fa'
-import ReactTooltip from 'react-tooltip'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import numeral from 'numeral'
+import { API_URL } from '../Helpers/API_URL';
 import { customerSearching, searchResult } from '../Actions'
 
 class ProductShowcase extends Component {
@@ -44,10 +43,10 @@ class ProductShowcase extends Component {
     }
 
     getSearchProducts = () => {
-        Axios.get(API_URL + '/products/searchproducts?searching=' + this.props.search)
+        Axios.get(API_URL + '/products/searchproducts?searching=' + this.props.location.search.split('=')[1])
         .then((res)=> {
-            console.log(res.data)
             this.setState({ searchResult: res.data })
+            console.log(this.state.searchResult)
         })
         .catch((err)=> {
             console.log(err)
@@ -69,6 +68,8 @@ class ProductShowcase extends Component {
         var id = this.props.location.search.split('=')[1]
         Axios.get(API_URL + '/categories/category/' + id)
         .then((res) => {
+            console.log('ini dati category ' + res.data)
+
             this.setState({productsFromCategory: res.data})
         })
         .catch((err) => {
@@ -80,6 +81,8 @@ class ProductShowcase extends Component {
         var id = this.props.location.search.split('=')[1]
         Axios.get(API_URL + '/brands/certainbrands/' + id)
         .then((res)=> {
+            console.log('ini dati brands ' + res.data)
+
             this.setState({productsFromBrand: res.data})
         })
         .catch((err) => {
@@ -88,120 +91,124 @@ class ProductShowcase extends Component {
     }
 
     renderAllProducts = () => {
-        return this.state.allProducts.map((val) => {
+        return this.state.allProducts.map((val, index) => {
             return (
-                <div key={val.id} className='col-xl-4 mb-5'>
-                        <img className='hot-item' 
-                        src='https://lh5.googleusercontent.com/-yr0hT0d9Jas/AAAAAAAAAAI/AAAAAAAAAB4/7RtmmfRY7DA/photo.jpg?type=square'
-                         alt='hothothot' style={{width : '290px',height:'290px', border : '0.5px solid grey'}}/>
-                        <span data-tip='peek' data-for='eye' className="circle text-uppercase">
-                        <ReactTooltip id='eye' place='right'><span>Add to Wishlist</span></ReactTooltip>
-                        <GiNestedHearts style={{fontWeight: 'bold'}} />
-                    </span>
-                    <span className="circle2 text-uppercase" data-tip='cart' data-for='cart'>
-                        <ReactTooltip id='cart'  place='right'><span>Add to Cart</span></ReactTooltip>
-                        <FaCartPlus style={{fontWeight: 'bold'}} />
-                    </span>
-                    <div style={{marginTop : '20px', fontSize : '18px'}}>
-                        <div>{val.productname}</div>
-                        <span style={{color: 'red'}} >{val.price}</span>
-                    </div>
+                <div key={index} className="card" style={{marginTop: '20px'}}>
+                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                        
+                        {val.discount > 0 ? 
+                        <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
+                         right: 0, backgroundColor: 'red', padding: 5}}>{val.discount + ' % OFF'}</span> : null}
+                        <img src={API_URL + val.picture} alt={val.productname} style={{width: "100%" , height: '300px'}} />
+                        <h3>{val.productname.toUpperCase()}</h3>
+                        <div>
+                            <strike className="price">{val.discount === 0 ? <tr style={{border: 'none'}} /> :
+                             'Rp. ' + numeral(val.price).format(0,0)}</strike>
+                        </div>
+                        <div>
+                            <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
+                            'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
+                        </div>
+                    </Link>
                 </div>
             )
         })
     }
 
     renderSearchProducts = () => {
-        return this.state.searchResult.map((val) => {
+        return this.state.searchResult.map((val, index) => {
             return (
-                <div key={val.id} className='col-xl-4 mb-5'>
-                        <img className='hot-item' 
-                        src='https://lh5.googleusercontent.com/-yr0hT0d9Jas/AAAAAAAAAAI/AAAAAAAAAB4/7RtmmfRY7DA/photo.jpg?type=square'
-                         alt='hothothot' style={{width : '290px',height:'290px', border : '0.5px solid grey'}}/>
-                        <span data-tip='peek' data-for='eye' className="circle text-uppercase">
-                        <ReactTooltip id='eye' place='right'><span>Add to Wishlist</span></ReactTooltip>
-                        <GiNestedHearts style={{fontWeight: 'bold'}} />
-                    </span>
-                    <span className="circle2 text-uppercase" data-tip='cart' data-for='cart'>
-                        <ReactTooltip id='cart'  place='right'><span>Add to Cart</span></ReactTooltip>
-                        <FaCartPlus style={{fontWeight: 'bold'}} />
-                    </span>
-                    <div style={{marginTop : '20px', fontSize : '18px'}}>
-                        <div>{val.productname}</div>
-                        <span style={{color: 'red'}} >{val.price}</span>
-                    </div>
-                </div>
-            )
+                <div key={index} className="card" style={{marginTop: '20px'}}>
+                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                        
+                        {val.discount > 0 ? 
+                        <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
+                         right: 0, backgroundColor: 'red', padding: 5}}>{val.discount + ' % OFF'}</span> : null}
+                        <img src={API_URL + val.picture} alt={val.productname} style={{width: "100%" , height: '300px'}} />
+                        <h3>{val.productname.toUpperCase()}</h3>
+                        <div>
+                            <strike className="price">{val.discount === 0 ? <tr style={{border: 'none'}} /> :
+                             'Rp. ' + numeral(val.price).format(0,0)}</strike>
+                        </div>
+                        <div>
+                            <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
+                            'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
+                        </div>
+                    </Link>
+                </div>            )
         })
     }
 
     renderSaleProducts = () => {
-        return this.state.saleProducts.map((val) => {
+        return this.state.saleProducts.map((val, index) => {
             return (
-                <div key={val.id} className='col-xl-4 mb-5'>
-                        <img className='hot-item' 
-                        src='https://lh5.googleusercontent.com/-yr0hT0d9Jas/AAAAAAAAAAI/AAAAAAAAAB4/7RtmmfRY7DA/photo.jpg?type=square'
-                         alt='hothothot' style={{width : '290px',height:'290px', border : '0.5px solid grey'}}/>
-                        <span data-tip='peek' data-for='eye' className="circle text-uppercase">
-                        <ReactTooltip id='eye' place='right'><span>Add to Wishlist</span></ReactTooltip>
-                        <GiNestedHearts style={{fontWeight: 'bold'}} />
-                    </span>
-                    <span className="circle2 text-uppercase" data-tip='cart' data-for='cart'>
-                        <ReactTooltip id='cart'  place='right'><span>Add to Cart</span></ReactTooltip>
-                        <FaCartPlus style={{fontWeight: 'bold'}} />
-                    </span>
-                    <div style={{marginTop : '20px', fontSize : '18px'}}>
-                        <div>{val.productname}</div>
-                        <span style={{color: 'red'}} >{val.price}</span>
-                    </div>
+                <div key={index} className="card" style={{marginTop: '20px'}}>
+                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                        
+                        {val.discount > 0 ? 
+                        <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
+                         right: 0, backgroundColor: 'red', padding: 5}}>{val.discount + ' % OFF'}</span> : null}
+                        <img src={API_URL + val.picture} alt={val.productname} style={{width: "100%" , height: '300px'}} />
+                        <h3>{val.productname.toUpperCase()}</h3>
+                        <div>
+                            <strike className="price">{val.discount === 0 ? <tr style={{border: 'none'}} /> :
+                             'Rp. ' + numeral(val.price).format(0,0)}</strike>
+                        </div>
+                        <div>
+                            <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
+                            'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
+                        </div>
+                    </Link>
                 </div>
             )
         })
     }
 
     renderProductsFromCategory = () => {
-        return this.state.productsFromCategory.map((val) => {
+        return this.state.productsFromCategory.map((val, index) => {
             return (
-                <div key={val.id} className='col-xl-4 mb-5'>
-                        <img className='hot-item' 
-                        src='https://lh5.googleusercontent.com/-yr0hT0d9Jas/AAAAAAAAAAI/AAAAAAAAAB4/7RtmmfRY7DA/photo.jpg?type=square'
-                         alt='hothothot' style={{width : '290px',height:'290px', border : '0.5px solid grey'}}/>
-                        <span data-tip='peek' data-for='eye' className="circle text-uppercase">
-                        <ReactTooltip id='eye' place='right'><span>Add to Wishlist</span></ReactTooltip>
-                        <GiNestedHearts style={{fontWeight: 'bold'}} />
-                    </span>
-                    <span className="circle2 text-uppercase" data-tip='cart' data-for='cart'>
-                        <ReactTooltip id='cart'  place='right'><span>Add to Cart</span></ReactTooltip>
-                        <FaCartPlus style={{fontWeight: 'bold'}} />
-                    </span>
-                    <div style={{marginTop : '20px', fontSize : '18px'}}>
-                        <div>{val.productname}</div>
-                        <span style={{color: 'red'}} >{val.price}</span>
-                    </div>
+                <div key={index} className="card" style={{marginTop: '20px'}}>
+                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                        
+                        {val.discount > 0 ? 
+                        <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
+                         right: 0, backgroundColor: 'red', padding: 5}}>{val.discount + ' % OFF'}</span> : null}
+                        <img src={API_URL + val.picture} alt={val.productname} style={{width: "100%" , height: '300px'}} />
+                        <h3>{val.productname.toUpperCase()}</h3>
+                        <div>
+                            <strike className="price">{val.discount === 0 ? <tr style={{border: 'none'}} /> :
+                             'Rp. ' + numeral(val.price).format(0,0)}</strike>
+                        </div>
+                        <div>
+                            <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
+                            'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
+                        </div>
+                    </Link>
                 </div>
             )
         })
     }
 
     renderProductsFromBrand = () => {
-        return this.state.productsFromBrand.map((val) => {
+        return this.state.productsFromBrand.map((val, index) => {
             return (
-                <div key={val.id} className='col-xl-4 mb-5'>
-                        <img className='hot-item' 
-                        src='https://lh5.googleusercontent.com/-yr0hT0d9Jas/AAAAAAAAAAI/AAAAAAAAAB4/7RtmmfRY7DA/photo.jpg?type=square'
-                         alt='hothothot' style={{width : '290px',height:'290px', border : '0.5px solid grey'}}/>
-                        <span data-tip='peek' data-for='eye' className="circle text-uppercase">
-                        <ReactTooltip id='eye' place='right'><span>Add to Wishlist</span></ReactTooltip>
-                        <GiNestedHearts style={{fontWeight: 'bold'}} />
-                    </span>
-                    <span className="circle2 text-uppercase" data-tip='cart' data-for='cart'>
-                        <ReactTooltip id='cart'  place='right'><span>Add to Cart</span></ReactTooltip>
-                        <FaCartPlus style={{fontWeight: 'bold'}} />
-                    </span>
-                    <div style={{marginTop : '20px', fontSize : '18px'}}>
-                        <div>{val.productname}</div>
-                        <span style={{color: 'red'}} >{val.price}</span>
-                    </div>
+                <div key={index} className="card" style={{marginTop: '20px'}}>
+                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                        
+                        {val.discount > 0 ? 
+                        <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
+                         right: 0, backgroundColor: 'red', padding: 5}}>{val.discount + ' % OFF'}</span> : null}
+                        <img src={API_URL + val.picture} alt={val.productname} style={{width: "100%" , height: '300px'}} />
+                        <h3>{val.productname.toUpperCase()}</h3>
+                        <div>
+                            <strike className="price">{val.discount === 0 ? <tr style={{border: 'none'}} /> :
+                             'Rp. ' + numeral(val.price).format(0,0)}</strike>
+                        </div>
+                        <div>
+                            <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
+                            'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
+                        </div>
+                    </Link>
                 </div>
             )
         })

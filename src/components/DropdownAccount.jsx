@@ -5,14 +5,15 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap'
-import {Link} from 'react-router-dom'
+import { Link, Redirect} from 'react-router-dom'
 import {IoIosContact} from 'react-icons/io'
 import { onUserLogout } from '../Actions'
 import { connect } from 'react-redux'
 
     class DropdownAccount extends React.Component{
+
       
-      
+
       renderLoginOrLogout = () => {
         if(this.props.email === ''){
           return (
@@ -30,6 +31,23 @@ import { connect } from 'react-redux'
           </Link>
         )
       }
+
+      renderWishlistOrAdminPage = () => {
+        if(this.props.role === 1){
+          return(
+            <Link to='/admin'>
+              <DropdownItem>
+                Admin Page
+              </DropdownItem>
+            </Link>
+          )
+        }
+        return(
+          <DropdownItem>
+             My Wishlist
+          </DropdownItem>
+        )
+      }
    
       render(){
         return(
@@ -45,14 +63,12 @@ import { connect } from 'react-redux'
                       
                       {/*=======================DISABLE IF USER HASN'T LOGIN============================== */}
                       <DropdownItem>
-                          {this.props.email}
+                          {this.props.fullname}
                       </DropdownItem>
                       {/*=======================DISABLE IF USER HASN'T LOGIN============================== */}
 
                     </Link >
-                    <DropdownItem>
-                      My Wishlist
-                    </DropdownItem>
+                    {this.renderWishlistOrAdminPage()}
                     <DropdownItem divider />
                         {this.renderLoginOrLogout()}
                   </DropdownMenu>
@@ -67,7 +83,8 @@ import { connect } from 'react-redux'
 const mapStateToProps = (state) => {
     return {
       fullname: state.auth.fullname,
-      email: state.auth.email
+      email: state.auth.email,
+      role: state.auth.role_id
     }
 }
 

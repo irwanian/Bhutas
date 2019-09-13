@@ -1,21 +1,20 @@
 import React from 'react'
-import {Card} from 'reactstrap'
+import { Card, Spinner } from 'reactstrap'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { emailLoginChanged, passwordLoginChanged, loginUser, logoutUser } from '../Actions'
 
 class Login extends React.Component{
-    
+
     onBtnLoginClick = () => {
         const { loginUser, email, password } = this.props
-        console.log(email, password);
-        
         loginUser({ email, password })
     }
 
     
     render(){
-        
+        if(this.props.login) return <Redirect to='/' />
+
         return(
             <div className='' style={{  
                 backgroundImage: `url(http://wallpaperesque.com/wp-content/uploads/plixpapers1506/giant_wallpaper_background_26879.jpg)`,
@@ -46,7 +45,10 @@ class Login extends React.Component{
                                     : null
                                 }
 
+                                {this.props.loading === false ?
                                 <input type='button' onClick={this.onBtnLoginClick} className='btn btn-dark mt-4 mb-3' value='LOGIN' />
+                                : <Spinner color='dark' style={{fontSize: '30px'}} />    
+                            }
                             </div>
                             <div className='pb-3' >
                                 New to Bhutas? 
@@ -72,7 +74,9 @@ const mapStateToProps = ({ auth }) => {
         email: auth.email,
         password: auth.password,
         loading: auth.loading,
-        error: auth.error
+        error: auth.error,
+        login: auth.justLogin,
+        fullname: auth.fullname
     }
 }
 

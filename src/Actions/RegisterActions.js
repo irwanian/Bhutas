@@ -5,8 +5,7 @@ import { FULLNAME_REGISTER_CHANGED,
          CON_PASSWORD_REGISTER_CHANGED,
          REGISTER_USER, 
          REGISTER_USER_FAIL,
-         REGISTER_USER_SUCCESS, 
-         LOGIN_USER_SUCCESS } from '../Actions/Types'
+         REGISTER_USER_SUCCESS } from '../Actions/Types'
 import Axios from 'axios'
 
 export const emailRegisterChanged = (text) => {
@@ -56,8 +55,17 @@ export const registerUser = ({ fullname, email, password, conPassword }) => {
                     .then((res)=> {
                         console.log(res.data)
                         localStorage.setItem('keeplogged', res.data.email)    
-                        dispatch({type: LOGIN_USER_SUCCESS, payload: res.data})
-                        dispatch({type: REGISTER_USER_SUCCESS})
+                        dispatch({type: REGISTER_USER_SUCCESS,
+                                  payload:{
+                                    userId: res.data[0].id,
+                                    email: res.data[0].email,
+                                    fullname: res.data[0].fullname,
+                                    password: res.data[0].password,
+                                    role_id: res.data[0].role_id,
+                                    loading: false,
+                                    error: '',
+                                    justRegistered: true
+                                  }})
                     })
                     .catch((err)=> {
                         console.log(err);
@@ -73,4 +81,4 @@ export const registerUser = ({ fullname, email, password, conPassword }) => {
     }
 }
 
-        
+

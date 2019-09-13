@@ -1,8 +1,9 @@
-import { SEARCH_BOX_CHANGE, SEARCH_PRODUCTS, SEARCH_FAIL, SEARCH_SUCCESS } from '../Actions/Types'
+import { SEARCH_BOX_CHANGE, SEARCH_PRODUCTS, SEARCH_FAIL, SEARCH_SUCCESS, ADD, REDUCE } from '../Actions/Types'
 
 const INITIAL_STATE = {
     searchInput: '',
-    loading: false
+    loading: false,
+    cartContent: 0
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,6 +16,10 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, loading: false}
         case SEARCH_FAIL:
             return { ...INITIAL_STATE }
+        case ADD:
+            return {...INITIAL_STATE, cartContent: state.cartContent + 1}
+        case REDUCE:
+            return {...INITIAL_STATE, cartContent: state.cartContent -1}    
         default:
             return state
     }

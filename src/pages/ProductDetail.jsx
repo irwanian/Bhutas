@@ -1,109 +1,107 @@
 import React from 'react'
-import Slider  from 'react-slick';
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css"; 
 import NewArrivals from '../components/SliderNewArrivals';
+import Axios from 'axios';
+import { API_URL } from '../Helpers/API_URL';
+import numeral from 'numeral'
+import { connect } from 'react-redux';
+import { addQuantity, reduceQuantity } from '../Actions'
 
 
 
-
-function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, display: "light", background: "#6677" }}
-        onClick={onClick}
-      />
-    );
-  }
-  
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, display: "block", background: "#6677" }}
-        onClick={onClick}
-      />
-    );
-  }
 
 class ProductDetail extends React.Component{
 state={
-    stock : 5
+    productDetail: []
 }
 
-    render(){
-        var settings = {
-            focusOnSelect: true,
-            infinite: true,
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            centerPadding : '-20px',
-            speed: 500,
-            nextArrow : <SampleNextArrow />,
-            prevArrow : <SamplePrevArrow />,
-            centerMode : true,
-            
-          };
+componentDidMount(){
+
+    const id = this.props.location.pathname.split('/')[2]
+    console.log(id)
+    Axios.get(API_URL + '/products/productdetail/' + id)
+    .then((res)=> {
+        this.setState({ productDetail: res.data.productData })
+        console.log(res.data)
+        console.log(this.state.productDetail);
+        
+    })
+    .catch((err)=> {
+        console.log(err)
+    })
+}
+
+onAddButton = () => {
+    this.props.addQuantity()
+}
+
+onReduceButton = () => {
+    if(this.props.count > 0){
+        this.props.reduceQuantity()
+    }
+    return 0
+}
+
+
+renderProductDetail = () => {
+    return this.state.productDetail.map((val) => {
         return(
-            <div  className='container'>
-                <div className='row mt-lg-5'>
-                    <div className='col-md-6'>
-                        <img src='https://i.imgur.com/8dV50nZ.jpg' className='img-fluid' alt='frog' style={{width :'100%', height:'466px', border : '1.5px solid blue', marginBottom:'20px'}} />
-                            <Slider {...settings}>
-                                <div>
-                                    <img className='img-fluid' src='http://guardianlv.com/wp-content/uploads/2014/01/ANI025-00213.jpg' alt='bangkong' style={{ width:'140px'}} />
-                                </div>
-                                <div>
-                                    <img className='img-fluid' src='http://guardianlv.com/wp-content/uploads/2014/01/ANI025-00213.jpg' alt='bangkong1' style={{ width:'140px'}} />
-                                </div>
-                                <div>
-                                    <img className='img-fluid' src='http://guardianlv.com/wp-content/uploads/2014/01/ANI025-00213.jpg' alt='bangkong2' style={{ width:'140px'}} />
-                                </div>
-                                <div>
-                                    <img className='img-fluid' src='http://guardianlv.com/wp-content/uploads/2014/01/ANI025-00213.jpg' alt='bangkong3' style={{ width:'140px'}} />
-                                </div>
-                                <div>
-                                    <img className='img-fluid' src='http://guardianlv.com/wp-content/uploads/2014/01/ANI025-00213.jpg' alt='bangkong34' style={{ width:'140px'}} />
-                                </div>    
-                            </Slider>
-                    </div>
-                    <div className='col-md-6'>
-                        <img src='https://images-na.ssl-images-amazon.com/images/I/61Jz46vAfiL._SX425_.jpg' alt='flying frogman' style={{width:'150px'}} />
-                        
-                        <h1>NAMA BARANG</h1>
-                        <h4>KATEGORI</h4>
-                        <span>
-                            <strike>HARGA SEBELUM DISKON</strike>
-                            <h5 style={{color : 'red'}}>HARGA FINAL </h5>  {/* Harga final diakses melalui global state, sehingga harga berubah mengikuty quantity pembelian */}
-                        </span>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta nulla voluptates, culpa mollitia fuga hic asperiores? Officia commodi corporis sapiente, quia nisi est fugiat quaerat animi sed at laboriosam vero!</p>
-                        <select name='size' style={{width:'150px', borderRadius:'5px', height:'30px'}}>
-                            <option ref='size' value='0' style={{fontWeight: '600'}}>SHOE SIZE</option>
-                            <option ref='size' value='46'>46 </option>
-                            <option ref='size' value='47'>47</option>
-                            <option ref='size' value='48'>48</option>
-                            <option ref='size' value='49'>49</option>
-                            <option ref='size' value='50'>50</option>
-                        </select>
-                        <span style={{marginLeft: '30px'}}> <span style={{marginRight: '20px', fontWeight: '600', fontSize: '17px'}}>QUANTITY :</span> </span>
-                        <input  type='button' className='btn btn-light mr-2' style={{fontSize: '15px', fontWeight: 'bold'}} value='-' />
-                         <span style={{fontSize: '15px', fontWeight: 'bold'}}>1</span>
-                           <input type='button' style={{fontSize: '15px', fontWeight: 'bold'}} className='btn btn-light ml-2' value='+' />
-                            <br />
-                        <input type='button' value='ADD TO CART'  className='btn btn-dark mt-4' />
-                        
-                    </div>
+            <div className='row mt-5'>
+                <div className='col-md-6 mt-5'>
+                    <img src={API_URL + val.picture} className='img-fluid' alt={val.productname} style={{width :450, height: 450, border : '1.5px solid blue', marginBottom:'20px'}} />
                 </div>
+                            
+                    <div className='col-md-6'>
+                    <img src={API_URL + val.logo} alt={val.brand} style={{width:'150px'}} />
+                    
+                    <h1>{val.productname.toUpperCase()}</h1>
+                    <h4>{val.category.toUpperCase()}</h4>
+                    <span>
+                        { val.discount > 0 ?    
+                        <strike >{'Rp. ' + numeral(val.price).format(0,0)}</strike>
+                        : null }
+                        <h5 style={{color : 'red'}}>{'Rp. ' + numeral(val.price - val.price * (val.discount/100)).format(0,0)} </h5>  {/* Harga final diakses melalui global state, sehingga harga berubah mengikuty quantity pembelian */}
+                    </span>
+                    <p >{val.description}</p>
+                    <select name='size' style={{width:'150px', borderRadius:'5px', height:'30px'}}>
+                        <option ref='size' value='0' style={{fontWeight: '600'}}>SHOE SIZE</option>
+                        <option ref='size' value='46'>46 </option>
+                        <option ref='size' value='47'>47</option>
+                        <option ref='size' value='48'>48</option>
+                        <option ref='size' value='49'>49</option>
+                        <option ref='size' value='50'>50</option>
+                    </select>
+                    <span style={{marginLeft: '30px'}}> <span style={{marginRight: '20px', fontWeight: '600', fontSize: '17px'}}>QUANTITY :</span> </span>
+                    <input   type='button' className='btn btn-light mr-2' style={{fontSize: '15px', fontWeight: 'bold'}}
+                     value='-' onClick={this.onReduceButton} />
+                        <span style={{fontSize: '15px', fontWeight: 'bold'}}>{this.props.count}</span>
+                        <input type='button' style={{fontSize: '15px', fontWeight: 'bold'}} className='btn btn-light ml-2'
+                         onClick={this.onAddButton} value='+' />
+                        <br />
+                    <input type='button' value='ADD TO CART'  className='btn btn-dark mt-4' />
+                    
+                    </div>
+                    </div>
+        )
+    })
+}
+    render(){
+                return(
+            <div  className='container'>
+                {this.renderProductDetail()}
                 <div className='pt-xl-5'>
+                    {/* =================render new arrivals======================= */}
                     <NewArrivals  />
+                    {/* =================render new arrivals======================= */}
                 </div>
             </div>
         )
     }
 }
 
+const mapStateToProps = ({ customer }) => {
+    return {
+        count: customer.cartContent
+    }
+}
 
-export default ProductDetail 
+export default connect(mapStateToProps, { addQuantity, reduceQuantity })(ProductDetail) 

@@ -11,7 +11,12 @@ class ProductUpload extends Component {
         imageFileName: 'Select Product Image...',
         addImageFile: undefined,
         selectBrand: 0,
-        selectCategory: 0
+        selectCategory: 0,
+        errorMessage: '',
+        successMessage: '',
+        description : '',
+        productName: '',
+        loading: false
     }
     
 
@@ -48,6 +53,18 @@ class ProductUpload extends Component {
         }       
     }
 
+    onProductNameChanges = (e) => {
+        if(e.target.value.length <= 40){
+            this.setState({ productName: e.target.value.toLowerCase()})
+        }
+    }
+
+    onDescriptionChanges = (e) => {
+        if(e.target.value.length <= 400){
+            this.setState({ description: e.target.value.toLowerCase()})
+        }
+    }
+
     renderBrandSelection = () => {
         return this.state.brandLists.map((val)=>{
             return (
@@ -69,20 +86,21 @@ class ProductUpload extends Component {
     }
 
     onUploadImageFile = (e) => {
-        console.log(e.target.files[0]);
-        
-        var file = e.target.files[0]
-        
+        const file = e.target.files[0]
+        console.log(file)
         if(file){
-            this.setState({ imageFileName : file.name ,addimageFile : file})
-            console.log(this.state.addImageFile)
+            this.setState({ addImageFile: file, imageFileName: file.name})
         }else{
-            this.setState({imageFileName : 'Select Product Image...', addimageFile : undefined})
-        };
+            this.setState({ addImageFile: undefined,imageFileName: 'Select Product Image...'})
+        }
     }
 
 
     onBtnUploadClick = () => {
+        const { productName, description, selectBrand, selectCategory } = this.state
+        if(productName === '' || description === '' || selectBrand === 0 || selectCategory === 0){
+            this.setState({ errorMessage: 'All Data Must be Filled!'})
+        }
         var formData = new FormData()
                 var headers ={
                     headers: {
@@ -91,18 +109,16 @@ class ProductUpload extends Component {
                 }
 
         var productData = {
-            productname: this.refs.productname.value,
-            price: this.refs.price.value,
-            description: this.refs.description.value,
+            productname: this.state.productName.toString(),
+            price: Number(this.refs.price.value),
+            description: this.state.description,
             brand_id: this.state.selectBrand,
             category_id: this.state.selectCategory,
-            image: this.state.addImageFile,
             size46: Number(this.refs.size46.value),
             size47: Number(this.refs.size47.value),
             size48: Number(this.refs.size48.value),
             size49: Number(this.refs.size49.value),
             size50: Number(this.refs.size50.value) 
-                      
         }
 
         formData.append('image', this.state.addImageFile)
@@ -110,13 +126,13 @@ class ProductUpload extends Component {
 
         Axios.post(API_URL + '/products/addproduct', formData, headers )
         .then((res)=> {
+            console.log('add data success');
             console.log(res)
+            this.setState({ errorMessage: '', successMessage: 'Data SUccessfully Added'})
         })
         .catch((err)=> {
             console.log(err)
         })
-        
-        console.log(this.state.selectBrand, this.state.selectCategory)
     }
 
     render(){
@@ -133,47 +149,49 @@ class ProductUpload extends Component {
                     marginBottom:30
                 }}>
                     <div className='mb-3 mt-3'>
-                        <div className='mb-2'>
-                            Product Name :
+                        <div className='ml-2 mr-2 mb-2 row justify-content-between'>
+                            Product Name : <span style={{color: 'red'}}>* Required</span>
                         </div>
-                         <input ref='productname' className='form-control' type='text' placeholder='Insert Product Name' /> 
+                         <input onChange={this.onProductNameChanges} className='form-control' style={{ paddingLeft: 10 }} type='text' placeholder='Insert Product Name' /> 
                     </div>
-                    <div className='mb-3 mt-3'>
-                        <div className='mb-2'>
-                            Product Price :
+                    <div className='mb-3'>
+                        <div className='ml-2 mr-2 mb-2 row justify-content-between'>
+                            Product Price : <span style={{color: 'red'}}>* Required</span>
                         </div>
                          <input ref='price' className='form-control' type='number' defaultValue={0} /> 
                     </div>
-                    <div className='mb-3'>
-                        <div className='mb-2'>
-                            Brands : 
+                    <div className='mt-3'>
+                        <div className='ml-3 mr-2 mb-2 row justify-content-between'>
+                            Brands : <span style={{color: 'red'}}>* Required</span>
                         </div>
                         {/* ======================RENDER BRAND OPTIONS HERE============================== */}
                          <select onChange={ this.onSelectBrandChange }>
+                         <option value={0}>BRAND</option>
                              {this.renderBrandSelection()}
                          </select>
                     </div>
-                    <div className='mb-3'>
-                        <div className='mb-2'>
-                            Category : 
+                    <div className='mb-3 mt-4'>
+                        <div className='ml-2 mr-2 mb-2 row justify-content-between'>
+                            Category : <span style={{color: 'red'}}>* Required</span>
                         </div>
 
                         {/*==========================RENDER CATEGORY OPTIONS HERE============================ */}
                        <select onChange={ this.onSelectCategoryChange }>
+                           <option value={0}>CATEGORY</option>
                             {this.renderCategorySelection()} 
                        </select>
                     </div>
-                    <div className='mb-3'>
-                        <div>
-                            Stock Availability :
+                    <div className='mt-5'>
+                        <div className='ml-2 mr-2 mb-2 row justify-content-between'>
+                            Stock Availability : <span style={{color: 'red'}}>* Required</span>
                         </div>
                         <table className='table-stock mt-3'>
                             <tr className='text-center'>
-                                <td>46</td>
-                                <td>47</td>
-                                <td>48</td>
-                                <td>49</td>
-                                <td>50</td>
+                                <td>SIZE 46</td>
+                                <td>SIZE 47</td>
+                                <td>SIZE 48</td>
+                                <td>SIZE 49</td>
+                                <td>SIZE 50</td>
                             </tr>
                                 <tr>
                                     <td> <input style={{outline: 'none', border: 'none', width: 60, textAlign: 'center'}}
@@ -191,15 +209,23 @@ class ProductUpload extends Component {
                     </div>
                     <div className='mb-3 mt-3'>
                         <div className='mb-3'>
-                            Product Description :
+                            Product Description :5
                         </div>
-                         <textarea ref='description' className='form-control' type='text' />
+                         <textarea onChange={this.onDescriptionChanges} className='form-control' type='text' />
                     </div>
-                    <div >
-                        <p className='mb-xl-3'>IMAGE UPLOAD</p>
-                        <CustomInput label={this.state.imageFileName} onChange={this.onUploadImageFile} className='mb-3' type='file'/>
+                    <div className='ml-2 mr-2 mb-2 row justify-content-between'>
+                        <p className='mb-xl-3'>IMAGE UPLOAD</p> <span style={{color: 'red'}}>* Required</span>
+                        <CustomInput id={1} label={this.state.imageFileName} onChange={this.onUploadImageFile} className='mb-3' type='file'/>
                     </div>
                 </form>
+                {this.state.errorMessage !== '' ?
+                 <div className='alert alert-danger'> {this.state.errorMessage} </div> : null
+                }
+
+                {
+                    this.state.successMessage === '' ? null :
+                 <div className='alert alert-success'> {this.state.successMessage} </div>                    
+                }
                 <input onClick={this.onBtnUploadClick} style={{position: 'relative', left: '83%', marginBottom: '70px'}} type="button" className='btn btn-dark' value='ADD PRODUCT' />
             </div>
             </div>

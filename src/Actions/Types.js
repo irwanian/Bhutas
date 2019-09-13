@@ -18,9 +18,13 @@ export const LOGIN_USER = 'LOGIN_USER'
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
 export const LOGOUT_USER = 'LOGOUT_USER'
 export const NOT_LOGIN_YET = 'NOT_LOGIN_YET'
+export const KEEP_LOGIN = 'KEEP_LOGIN'
 
 // customer Reducer
 export const SEARCH_BOX_CHANGE = 'SEARCH_BOX_CHANGE' 
 export const SEARCH_PRODUCTS = 'SEARCH_PRODUCTS'
 export const SEARCH_FAIL = 'SEARCH_FAIL'
 export const SEARCH_SUCCESS = 'SEARCH_SUCCESS'
+export const CART_ADDED = 'CART_ADDED'
+export const ADD = 'ADD'
+export const REDUCE = 'REDUCE'

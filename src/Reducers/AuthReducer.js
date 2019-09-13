@@ -8,15 +8,20 @@ import { FULLNAME_REGISTER_CHANGED,
          LOGIN_USER,
          LOGIN_USER_FAIL,
          LOGIN_USER_SUCCESS,
-         LOGOUT_USER } from '../Actions/Types'
+         LOGOUT_USER, 
+         KEEP_LOGIN } from '../Actions/Types'
 
 const INITIAL_STATE = {
+        userId: 0,
         fullname: '',
         email: '',
         password: '',
         conPassword: '',
         loading: false,
-        error: ''
+        error: '',
+        justRegistered: false,
+        justLogin: false,
+        role_id: ''
     }
 
     export default (state = INITIAL_STATE, action) => {
@@ -34,20 +39,17 @@ const INITIAL_STATE = {
             case REGISTER_USER_FAIL:
                 return { ...state, error: action.payload, loading: false}
             case REGISTER_USER_SUCCESS:
-                return { ...state, loading: false,
-                                   password: '',
-                                   conPassword: '',
-                                   error: ''
-                        }
+                return { ...state, ...action.payload }
             case LOGIN_USER:
                 return {...state, loading: true, error: ''}
             case LOGIN_USER_FAIL:
                 return {...state, error: action.payload, loading: false}
             case LOGIN_USER_SUCCESS:
-                return {...state, loading: false,
-                                  password: '',
-                                  conPassword: '',
-                                  error: ''}
+                return {...state, ...action.payload}
+            case KEEP_LOGIN:
+                console.log(action.payload)
+                console.log(state)
+                return  {...state, ...action.payload}  
             case LOGOUT_USER: 
                 return {...INITIAL_STATE} 
             default: 

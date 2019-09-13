@@ -8,12 +8,12 @@ import {
   NavItem,
   NavLink,
 } from 'reactstrap'
-  import {Link, Redirect} from 'react-router-dom'
-  import {IoIosCart} from 'react-icons/io'
+  import { Link } from 'react-router-dom'
+  import { IoIosCart } from 'react-icons/io'
 import Categories from './DropdownCategories';
 import Brands from './DropdownBrands';
 import AccountInfo from './DropdownAccount';
-import {GoSearch} from 'react-icons/go'
+import { GoSearch } from 'react-icons/go'
 import { connect } from 'react-redux'
 import { customerSearching, getSearchResults } from '../Actions'
 import Axios from 'axios';
@@ -21,12 +21,20 @@ import { API_URL } from '../Helpers/API_URL';
 
 class Header extends React.Component {
   
+
+  
+
   state = {
-    isOpen: false,
-    cartAddOn : 69
+    isOpen: false
   };
   toggle =()=> {
     this.setState({isOpen: !this.state.isOpen});
+  }
+
+
+  componentDidMount(){
+    console.log(this.props.role + ' role nya \n emailnya ' + this.props.email + '\n namanya ' + this.props.fullname )
+
   }
 
   render() {
@@ -35,18 +43,21 @@ class Header extends React.Component {
         <input ref='searchInput' onChange={(e)=> this.props.customerSearching(e.target.value)}
           className='search-input bg-transparent' type='text' />
         
-        <Link to={'/products?searching=' + this.props.search}>
+        <a href={'/products?searching=' + this.props.search}>
           <GoSearch className='search-icon' />  
-        </Link>
+        </a>
+        
         {/* ======================DISABLE IF USER HASN'T LOGIN================================ */}
+        
+        {this.props.role === 1 ? null :
         <Link to='mycart'>
           <IoIosCart className='flex-center cart-icon'   />
             {/* ==================Cart-Content-Start============= */}
-            {this.state.cartAddOn < 1 ? null :
-            <span className='cart-filling'>{this.state.cartAddOn}</span>
+            {this.props.cartContent < 1 ? null :
+            <span className='cart-filling'>{this.props.cartContent}</span>
           }
             {/* ==================Cart-Content-End================ */}
-        </Link>
+        </Link> }
         {/*=======================DISABLE IF USER HASN'T LOGIN============================== */}
 
         <Navbar color="dark" dark expand="md" style={{position:'fixed', zIndex:'1', width: '100%'}} >
@@ -98,10 +109,14 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = ({customer}) => {
+const mapStateToProps = ({ customer, auth }) => {
   return {
       search: customer.searchInput,
-      loading: customer.loading
+      loading: customer.loading,
+      cartContent: customer.cartContent,
+      role: auth.role_id,
+      fullname: auth.fullname,
+      email: auth.email 
   }
 }
 

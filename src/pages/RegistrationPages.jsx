@@ -32,7 +32,8 @@ class Register extends React.Component{
     }
     
     render(){
-    
+        if(this.props.redirecting) return <Redirect to='waitingverification' />
+
         return(
             <div className="container">
                 <div className='row justify-content-center'>
@@ -47,7 +48,7 @@ class Register extends React.Component{
                                     type='text' placeholder='Full Name'/>
                                 </div>
                                 <div>
-                                    <input onChange={(e)=> this.props.emailRegisterChanged(e.target.value.toLowerCase())} 
+                                    <input onChange={(e)=> this.props.emailRegisterChanged(e.target.value)} 
                                     className='mt-4' style={{width: '400px', height: '40px', border: '1px solid grey'
                                     ,outline: 'none', paddingLeft:'10px', borderRadius : '25px'}}
                                     type='text' placeholder='email address' />
@@ -84,7 +85,8 @@ const mapStateToProps = ({ auth }) => {
         password: auth.password,
         conPassword: auth.conPassword,
         loading: auth.loading,
-        error: auth.error
+        error: auth.error,
+        redirecting: auth.justRegistered
     }
 }
 
