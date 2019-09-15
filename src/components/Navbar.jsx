@@ -15,27 +15,48 @@ import Brands from './DropdownBrands';
 import AccountInfo from './DropdownAccount';
 import { GoSearch } from 'react-icons/go'
 import { connect } from 'react-redux'
-import { customerSearching, getSearchResults } from '../Actions'
+import { customerSearching, getSearchResults, addedCartContent } from '../Actions'
 import Axios from 'axios';
 import { API_URL } from '../Helpers/API_URL';
 
 class Header extends React.Component {
-  
-
-  
-
   state = {
-    isOpen: false
+    isOpen: false,
+    cartContent: 0
   };
   toggle =()=> {
     this.setState({isOpen: !this.state.isOpen});
   }
 
-
   componentDidMount(){
-    console.log(this.props.role + ' role nya \n emailnya ' + this.props.email + '\n namanya ' + this.props.fullname )
+    const id = this.props.id
+    if(id !== 0){
+        Axios.get(API_URL + '/transaction/cartcontent/' + id)
+            .then((res)=> {
+                this.setState({ cartContent: res.data.results })
+                this.props.addedCartContent(res.data.results)
+            })
+            .catch((err)=> {
+                console.log(err)
+            })
+    }
+}
 
-  }
+componentWillReceiveProps = (newProps) => {
+  console.log(newProps.id)
+        if(this.props.id !== newProps.id){
+            console.log('pass')
+            const id = newProps.id
+            Axios.get(API_URL + '/transaction/cartcontent/' + id)
+            .then((res)=> {
+                this.setState({cartContent: res.data.results })
+                this.props.addedCartContent(res.data.results)
+            })
+            .catch((err)=> {
+                console.log(err)
+            })
+        }
+}
 
   render() {
     return (
@@ -50,11 +71,12 @@ class Header extends React.Component {
         {/* ======================DISABLE IF USER HASN'T LOGIN================================ */}
         
         {this.props.role === 1 ? null :
-        <Link to='mycart'>
-          <IoIosCart className='flex-center cart-icon'   />
+        <Link to='/mycart'>
+          <IoIosCart className='flex-center cart-icon'/>
             {/* ==================Cart-Content-Start============= */}
-            {this.props.cartContent < 1 ? null :
-            <span className='cart-filling'>{this.props.cartContent}</span>
+            
+            {this.state.cartContent < 1 ? null : 
+            <span className='cart-filling'>{this.state.cartContent}</span>
           }
             {/* ==================Cart-Content-End================ */}
         </Link> }
@@ -116,8 +138,9 @@ const mapStateToProps = ({ customer, auth }) => {
       cartContent: customer.cartContent,
       role: auth.role_id,
       fullname: auth.fullname,
-      email: auth.email 
+      email: auth.email ,
+      id: auth.userId
   }
 }
 
-export default connect(mapStateToProps, { customerSearching, getSearchResults })(Header)
+export default connect(mapStateToProps, { customerSearching, getSearchResults, addedCartContent })(Header)

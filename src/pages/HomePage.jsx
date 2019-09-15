@@ -34,16 +34,16 @@ class HomePage extends React.Component{
     renderAllProducts = () => {
         return this.state.products.map((val, index) => {
                 return (
-                <div key={index} className="card" style={{marginTop: '20px'}}>
-                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                <div key={index} className="card" style={{marginTop: '40px', marginRight: 20}}>
+                    <Link style={{textDecoration: 'none'}}  to={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
                         <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
-                         right: 0, backgroundColor: 'red', padding: 5}}>{val.discount + ' % OFF'}</span> : null}
-                        <img src={API_URL + val.picture} alt={val.productname} style={{width: "100%" , height: '300px'}} />
+                         right: 30, backgroundColor: 'red', padding: 5}}>{val.discount + ' % OFF'}</span> : null}
+                        <img src={API_URL + val.picture} alt={val.productname} style={{width: "100%" , height: '240px'}} />
                         <h3>{val.productname.toUpperCase()}</h3>
                         <div>
-                            <strike className="price">{val.discount === 0 ? <tr style={{border: 'none'}} /> :
+                            <strike className="price">{val.discount === 0 ? <br/> :
                              'Rp. ' + numeral(val.price).format(0,0)}</strike>
                         </div>
                         <div>

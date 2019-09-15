@@ -94,7 +94,7 @@ class ProductShowcase extends Component {
         return this.state.allProducts.map((val, index) => {
             return (
                 <div key={index} className="card" style={{marginTop: '20px'}}>
-                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                    <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
                         <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
@@ -109,7 +109,7 @@ class ProductShowcase extends Component {
                             <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
                             'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
                         </div>
-                    </Link>
+                    </a>
                 </div>
             )
         })
@@ -119,7 +119,7 @@ class ProductShowcase extends Component {
         return this.state.searchResult.map((val, index) => {
             return (
                 <div key={index} className="card" style={{marginTop: '20px'}}>
-                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                    <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
                         <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
@@ -134,8 +134,9 @@ class ProductShowcase extends Component {
                             <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
                             'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
                         </div>
-                    </Link>
-                </div>            )
+                    </a>
+                </div>
+                )
         })
     }
 
@@ -143,7 +144,7 @@ class ProductShowcase extends Component {
         return this.state.saleProducts.map((val, index) => {
             return (
                 <div key={index} className="card" style={{marginTop: '20px'}}>
-                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                    <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
                         <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
@@ -158,7 +159,7 @@ class ProductShowcase extends Component {
                             <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
                             'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
                         </div>
-                    </Link>
+                    </a>
                 </div>
             )
         })
@@ -168,7 +169,7 @@ class ProductShowcase extends Component {
         return this.state.productsFromCategory.map((val, index) => {
             return (
                 <div key={index} className="card" style={{marginTop: '20px'}}>
-                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                    <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
                         <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
@@ -183,7 +184,7 @@ class ProductShowcase extends Component {
                             <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
                             'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
                         </div>
-                    </Link>
+                    </a>
                 </div>
             )
         })
@@ -193,7 +194,7 @@ class ProductShowcase extends Component {
         return this.state.productsFromBrand.map((val, index) => {
             return (
                 <div key={index} className="card" style={{marginTop: '20px'}}>
-                    <Link style={{textDecoration: 'none'}}  to={'detail/' + val.product_id}>
+                    <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
                         <span style={{fontWeight: 600, width: '100px',color: 'white', height: '30px',position: 'absolute',
@@ -208,7 +209,7 @@ class ProductShowcase extends Component {
                             <p className='final-price'>{val.discount === 0 ? 'Rp. ' + numeral(val.price).format(0,0):
                             'Rp. ' + numeral(val.price - ( val.price * (val.discount / 100))).format(0,0)}</p>
                         </div>
-                    </Link>
+                    </a>
                 </div>
             )
         })

@@ -1,24 +1,68 @@
 import React from 'react'
 import Axios from 'axios'
+import { Link } from 'react-router-dom'
 import { API_URL } from '../Helpers/API_URL'
 import { connect } from 'react-redux'
+import { addedCartContent } from '../Actions'
+import { Spinner } from 'reactstrap'
 import numeral from 'numeral'
 
 class Cart extends React.Component {
     state = {
-        cartDetail: []
+        cartDetail: [],
+        totalQty: 0,
+        totalPrice: 0
     }
 
     componentDidMount(){
         const id = this.props.id
-        Axios.get(API_URL + '/transaction/usercart/' + id)
-        .then((res)=> {
-            this.setState({ cartDetail: res.data })
-            console.log(this.state.cartDetail)
+        if(id !== 0){
+            Axios.get(API_URL + '/transaction/usercart/' + id)
+                .then((res)=> {
+                    console.log(res.data)
+                    this.setState({ cartDetail: res.data })
+                    console.log(this.state.cartDetail)
+                })
+                .catch((err)=> {
+                    console.log(err)
+                })
+        }
+    }
+
+    componentWillReceiveProps(newProps){
+        console.log(newProps.id)
+        if(this.props.id !== newProps.id){
+            console.log('pass')
+            const id = newProps.id
+            Axios.get(API_URL + '/transaction/usercart/' + id)
+            .then((res)=> {
+                console.log(res.data);
+                this.setState({ cartDetail: res.data })
+                console.log(this.state.cartDetail)
+            })
+            .catch((err)=> {
+                console.log(err)
+            })
+        }
+    }
+
+    renderTotalPrice = () => {
+        let total = 0
+
+        this.state.cartDetail.forEach((val)=> {
+            total += val.total_price
         })
-        .catch((err)=> {
-            console.log(err)
+        return total
+    }
+
+    renderTotalQty = () => {
+        let total = 0
+
+        this.state.cartDetail.forEach((val)=> {
+            total += val.qty
         })
+        this.props.addedCartContent(total)
+        return total
     }
 
     renderingCartDetail = () => {
@@ -46,47 +90,60 @@ class Cart extends React.Component {
     }
     
     render(){
-        return(
-            <div  >
-                <div className='text-center' style={{paddingTop : '100px'}}>
-                    <h1 style={{fontWeight : 'bolder'}}>
-                        Your Cart 
-                     </h1>  
+        if(this.state.cartDetail.length > 0){
+                return(
+                    <div  >
+                        <div className='text-center' style={{paddingTop : '60px'}}>
+                            <h1 style={{fontWeight : 'bolder'}}>
+                                Your Cart 
+                             </h1>  
+                        </div>
+                        {/*===========================TABLE SECTION============================  */}
+                        <div className='row justify-content-center'>
+                            <table style={{width: '100vw', backgroundColor: '#e9f0ef' }} className='text-center mt-5'>
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th> Product </th>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                {/* ======================MAP HERE================================ */}
+                                <tbody>
+                                    {this.renderingCartDetail()}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colSpan='3' style={{fontWeight: 'bolder'}}>SUB TOTAL</td>
+                                        <td style={{fontWeight: 'bolder'}}>{this.renderTotalQty()} </td>
+                                        <td style={{fontWeight: 'bolder'}}> {'Rp. ' + numeral(this.renderTotalPrice()).format(0,0)} </td>
+                                    </tr>
+                                </tfoot>
+                                {/* ======================MAP LIMIT================================ */}
+        
+                            </table>
+                        </div>
+                        {/*===========================TABLE SECTION============================  */}
+                        <div className='row justify-content-around mt-5'>
+                            <Link to='/products' >
+                                 <input type='button'className='btn btn-dark' value='<< CONTINUE SHOPPING'/>
+                            </Link>
+                            <Link to={'/checkout/' + this.props.id}>
+                                <input type='button' className='btn btn-dark ' value='PROCEED TO CHECKOUT >>' />
+                            </Link>
+                        </div>
+                    </div>
+                )
+        }else if(this.state.cartDetail.length === 0){
+            return (
+                <div className='text-center mt-5' >
+                    <img src='https://i.pinimg.com/originals/bb/d1/21/bbd1218cb06764d91897de614a948b1a.png'
+                     style={{width: '30vw', height: '40vw'}} alt='Bhutas' />
                 </div>
-                {/*===========================TABLE SECTION============================  */}
-                <div className='row justify-content-center'>
-                    <table style={{width: '100vw', backgroundColor: '#e9f0ef' }} className='text-center mt-5'>
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th> Product </th>
-                                <th>Description</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        {/* ======================MAP HERE================================ */}
-                        <tbody>
-                            {this.renderingCartDetail()}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colSpan='3' style={{fontWeight: 'bolder'}}>SUB TOTAL</td>
-                                <td style={{fontWeight: 'bolder'}}>total quantity</td>
-                                <td style={{fontWeight: 'bolder'}}>Rp. 60.000</td>
-                            </tr>
-                        </tfoot>
-                        {/* ======================MAP LIMIT================================ */}
-
-                    </table>
-                </div>
-                {/*===========================TABLE SECTION============================  */}
-                <div className='row justify-content-between mt-5'>
-                    <input type='button'className='btn btn-dark' value=' CONTINUE SHOPPING '/>
-                    <input type='button' className='btn btn-dark ' value='PROCEED TO CHECKOUT' />
-                </div>
-            </div>
-        )
+            ) 
+        }
     }
 }
 
@@ -96,4 +153,4 @@ const mapStateToProps = ({ auth }) => {
     }
 }
 
-export default connect(mapStateToProps)(Cart)
+export default connect(mapStateToProps, { addedCartContent })(Cart)

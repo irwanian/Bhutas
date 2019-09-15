@@ -13,12 +13,14 @@ class AdminPage extends React.Component{
         stockData: [],
         expanded: false,
         selectedEditId : 0,
+        editBrand: 0,
+        stockEditId: 0,
+        descriptionId: 0,
+        editCategory: 0,
         errorMessage: '',
         successMessage: '',
         editProductPicture: undefined,
         editProductImageName: 'Picture...',
-        editBrand: 0,
-        editCategory: 0,
         openModal: false
     }
 
@@ -47,21 +49,7 @@ class AdminPage extends React.Component{
         // console.log(this.state.editProductPicture)
     }
 
-    renderCategoryLists = () => {
-        return this.state.categoryLists.map((val, index)=> {
-            return (
-                <option key={index} value={val.id} >{val.categoryname.toUpperCase()}</option>
-            )
-        })
-    }
     
-    renderBrandLists = () => {
-        return this.state.brandLists.map((val, index)=> {
-            return (
-                <option key={index} value={val.id} >{val.brandname.toUpperCase()}</option>
-            )
-        })
-    }
 
     handleCategoryChange = (e) => {
         const category = e.target.value
@@ -80,31 +68,8 @@ class AdminPage extends React.Component{
         }
     }
 
-    renderSuccessOrErrorMessage = () => {
-        if(this.state.errorMessage){
-            return <span className='alert alert-danger'>{this.state.errorMessage}</span>
-        }
-        if(this.state.successMessage){
-            return <span className='alert alert-success'>{this.state.successMessage}</span>
-        }
-        return null
-    }
-
-    renderingDescription = (text) => {
-        if(this.state.expanded === false){
-            let arr = text.split(' ')
-            let newArr = []
-
-            for( let i = 0; i < 5; i++ ){
-                newArr.push(arr[i])
-            }
-            return newArr.join(' ')
-        }
-        return text
-    }
-
-    readMoreClick = () => {
-        this.setState({ expanded: !this.state.expanded})
+    readMoreClick = (id) => {
+        this.setState({ descriptionId: id, expanded: !this.state.expanded})
     }
 
     onDeleteProduct = (id) => {
@@ -132,7 +97,7 @@ class AdminPage extends React.Component{
     }
 
     editStockData = (id) => {
-        this.setState({ selectedEditId: id })
+        this.setState({ stockEditId: id })
     }
 
     updateStockData = (id) => {
@@ -150,52 +115,6 @@ class AdminPage extends React.Component{
         })
         .catch((err)=> {
             console.log(err)
-        })
-    }
-
-    renderStockData = () => {
-        return this.state.stockData.map((val)=> {
-            if(this.state.selectedEditId === val.id){
-             return(
-                 <tr>
-                    <td>{val.productname.toUpperCase()} </td>
-                    <td>
-                        <input style={{width: '40px'}} type='number' ref='size46' defaultValue={val.size_46}/>
-                    </td>
-                    <td>
-                         <input style={{width: '40px'}} type='number' ref='size47' defaultValue={val.size_47}/>
-                    </td>
-                    <td>
-                         <input style={{width: '40px'}} type='number' ref='size48' defaultValue={val.size_48}/>
-                    </td>
-                    <td>
-                           <input style={{width: '40px'}} type='number' ref='size49' defaultValue={val.size_49}/>
-                    </td>
-                    <td>
-                            <input style={{width: '40px'}} type='number' ref='size50' defaultValue={val.size_50}/>
-                    </td>
-                    <td>
-                            <input type='button' className='btn btn-danger' onClick={ ()=>this.setState({ selectedEditId: 0 })} value='Cancel'/>
-                    </td>
-                    <td>
-                            <input onClick={()=> this.updateStockData(val.id)} type='button' className='btn btn-success' value='Update'/>
-                    </td>
-                 </tr>
-             )   
-            }
-            return (
-                <tr>
-                    <td>{val.productname.toUpperCase()}</td>
-                    <td>{val.size_46}</td>
-                    <td>{val.size_47}</td>
-                    <td>{val.size_48}</td>
-                    <td>{val.size_49}</td>
-                    <td>{val.size_50}</td>
-                    <td>
-                        <input type='button' className='btn btn-primary' onClick={()=> this.editStockData(val.id)} value='Edit' />
-                    </td>
-                </tr>
-            )
         })
     }
 
@@ -249,6 +168,89 @@ class AdminPage extends React.Component{
     
     }
 
+    // ================================== DATA RENDERING ================================================
+
+    renderSuccessOrErrorMessage = () => {
+        if(this.state.errorMessage){
+            return <span className='alert alert-danger'>{this.state.errorMessage}</span>
+        }
+        if(this.state.successMessage){
+            return <span className='alert alert-success'>{this.state.successMessage}</span>
+        }
+        return null
+    }
+    renderingCutDescription = (text) => {
+        let arr = text.split(' ')
+        let newArr = []
+
+        for( let i = 0; i < 5; i++ ){
+            newArr.push(arr[i])
+        }
+        return newArr.join(' ')
+}
+
+    renderCategoryLists = () => {
+        return this.state.categoryLists.map((val, index)=> {
+            return (
+                <option key={index} value={val.id} >{val.categoryname.toUpperCase()}</option>
+            )
+        })
+    }
+    
+    renderBrandLists = () => {
+        return this.state.brandLists.map((val, index)=> {
+            return (
+                <option key={index} value={val.id} >{val.brandname.toUpperCase()}</option>
+            )
+        })
+    }
+
+    renderStockData = () => {
+        return this.state.stockData.map((val)=> {
+            if(this.state.stockEditId === val.id){
+             return(
+                 <tr>
+                    <td>{val.productname.toUpperCase()} </td>
+                    <td>
+                        <input style={{width: '40px'}} type='number' ref='size46' defaultValue={val.size_46}/>
+                    </td>
+                    <td>
+                         <input style={{width: '40px'}} type='number' ref='size47' defaultValue={val.size_47}/>
+                    </td>
+                    <td>
+                         <input style={{width: '40px'}} type='number' ref='size48' defaultValue={val.size_48}/>
+                    </td>
+                    <td>
+                           <input style={{width: '40px'}} type='number' ref='size49' defaultValue={val.size_49}/>
+                    </td>
+                    <td>
+                            <input style={{width: '40px'}} type='number' ref='size50' defaultValue={val.size_50}/>
+                    </td>
+                    <td>
+                            <input onClick={()=> this.updateStockData(val.id)} type='button' className='btn btn-success' value='Update'/>
+                    </td>
+                    <td>
+                            <input type='button' className='btn btn-danger' onClick={ ()=>this.setState({ stockEditId: 0 })} value='Cancel'/>
+                    </td>
+                 </tr>
+             )   
+            }
+            return (
+                <tr>
+                    <td>{val.productname.toUpperCase()}</td>
+                    <td>{val.size_46}</td>
+                    <td>{val.size_47}</td>
+                    <td>{val.size_48}</td>
+                    <td>{val.size_49}</td>
+                    <td>{val.size_50}</td>
+                    <td>
+                        <input type='button' className='btn btn-primary' onClick={()=> this.editStockData(val.id)} value='Edit' />
+                    </td>
+                </tr>
+            )
+        })
+    }
+
     renderProductLists = () => {
         return this.state.productLists.map((val, index)=> {
             if(this.state.selectedEditId !== val.product_id){
@@ -267,16 +269,17 @@ class AdminPage extends React.Component{
                                 <td>{val.discount}</td>
                                 <td >
                                     <div style={{width: '160px'}} >
-                                        { this.renderingDescription(val.description, index) }
+                                        {this.state.descriptionId === val.product_id && this.state.expanded ? val.description :
+                                         this.renderingCutDescription(val.description) }
                                      </div>
                                      <div>
-                                         <span style={{cursor: 'pointer', color: 'red'}} onClick={()=> this.readMoreClick()}> {this.state.expanded ? 'Read Less...' : ' Read More...'} </span>
+                                         <span style={{cursor: 'pointer', color: 'red'}} onClick={()=> this.readMoreClick(val.product_id)}> {this.state.expanded && this.state.descriptionId === val.product_id ? 'Read Less...' : ' Read More...'} </span>
                                      </div>
                                 </td>
                                 <td>{val.brand.toUpperCase()}</td>
                                 <td>{val.category.toUpperCase()}</td>
                                 <td>
-                                    <input type='button' onClick={()=> this.onBtnStockdetail(val.product_id, index)} value='Stock Details' className='btn btn-info' />
+                                    <input type='button' onClick={()=> this.onBtnStockdetail(val.product_id)} value='Stock Details' className='btn btn-info' />
                                 </td>
                                 <td><input onClick={()=> this.onEditButtonClick(val.product_id)} type='button' value='Edit' className='btn btn-primary' /> </td>
                                 <td><input onClick={() =>this.onDeleteProduct(val.product_id, index)} type='button' value='Delete' className='btn btn-danger' /></td>                                                                                                                

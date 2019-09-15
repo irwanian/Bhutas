@@ -35,10 +35,17 @@ class Register extends React.Component{
         if(this.props.redirecting) return <Redirect to='waitingverification' />
 
         return(
-            <div className="container">
-                <div className='row justify-content-center'>
+            <div style={{  
+                backgroundImage: `url(https://i.pinimg.com/originals/18/ed/9a/18ed9a4506da6361cb66cd5dd94130fb.jpg)`,
+                height : '100',
+                width : '100',
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat'
+            }}>
+                <div className='row' style={{paddingLeft: 100}}>
                     <div  >
-                    <Card  style={{marginTop : '100px', width : '450px', height : '550px', marginBottom : '50px'}} >
+                    <table className='form-table'  style={{backgroundColor: '#ebeff5', marginTop : '100px', width : '450px', height : '550px', marginBottom : '50px'}} >
                     <h2 style={{marginTop: '30px', paddingTop : '30px'}} className='text-center'>CREATE ACCOUNT</h2>
                             <div className='text-center' >
                                 <div>
@@ -69,7 +76,7 @@ class Register extends React.Component{
                                 {this.props.loading === false ? <input type='button' onClick={this.onRegisterBtnClick} className='btn btn-dark mt-4 mb-3' value='Register' />:
                                 <Spinner style={{fontSize: '40px', fontWeight: 200}} className='mt-4'/>}
                             </div>
-                        </Card>
+                        </table>
                     </div>
                 </div>
             </div>

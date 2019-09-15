@@ -54,7 +54,7 @@ export const registerUser = ({ fullname, email, password, conPassword }) => {
                     Axios.post(API_URL + '/users/addnewuser', {fullname, email, password})
                     .then((res)=> {
                         console.log(res.data)
-                        localStorage.setItem('keeplogged', res.data.email)    
+                        localStorage.setItem('keeplogged', res.data[0].email)    
                         dispatch({type: REGISTER_USER_SUCCESS,
                                   payload:{
                                     userId: res.data[0].id,

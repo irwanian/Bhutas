@@ -35,9 +35,11 @@ class NewArrivals extends React.Component{
                     <div style={{marginTop : '20px', fontSize : '18px', width: '170px'}}>
                         <div>{val.productname.toUpperCase()}</div>
                         <div >
-                            { val.discount > 0 ?
+                            { 
+                                val.discount === 0 ?
+                             <br/> :
                             <span style={{color: 'black', fontSize: '22x'}} ><strike>{'Rp. ' + val.price}</strike></span>
-                            : null}
+                            }
                         </div>
                             <span style={{color: 'red'}} >{ 'Rp. ' + numeral(val.price - val.price * (val.discount/100)).format(0.0)}</span>
                       </div>

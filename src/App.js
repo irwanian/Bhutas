@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import Axios from 'axios';
+import { API_URL } from './Helpers/API_URL';
 import { Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { keepLogin } from './Actions'
@@ -17,18 +19,25 @@ import AddNewBrand from './AdminPages/AddNewBrands';
 import CategoryManagement from './AdminPages/CategoryManagement'
 import WaitingVerification from './pages/WaitingVerification';
 import AccountVerified from './pages/AccountVerified';
-import Axios from 'axios';
-import { API_URL } from './Helpers/API_URL';
+import Checkout from './pages/CheckoutPage';
 
 class App extends React.Component{
   
   componentDidMount(){
     const user = localStorage.getItem('keeplogged')
-    
+    console.log(user)    
     Axios.get(API_URL + '/users/keeplogged?email=' + user)
     .then((res)=> {
       console.log(res.data)
-      this.props.keepLogin(res.data)
+      this.props.keepLogin({userId: res.data[0].id,
+                            role_id: res.data[0].role_id,
+                            fullname: res.data[0].fullname,
+                            email: res.data[0].email,
+                            password: res.data[0].password,
+                            error: '',
+                            loading: false,
+                            is_login: true,
+                            justLogin: true})
     })
     .catch((err)=> {
       console.log(err)
@@ -54,6 +63,7 @@ class App extends React.Component{
             <Route path='/addnewbrand' component={AddNewBrand} />
             <Route path='/uploadproduct' component={ProductUpload} />
             <Route path='/mycart' component={CartPage} />
+            <Route path='/checkout' component={Checkout} />
             <Route path ='*' component={ErrorPage} />
          </Switch> 
 

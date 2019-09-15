@@ -50,7 +50,7 @@ const INITIAL_STATE = {
                 console.log(action.payload)
                 console.log(state)
                 return  {...state, ...action.payload}  
-            case LOGOUT_USER: 
+                case LOGOUT_USER: 
                 return {...INITIAL_STATE} 
             default: 
                 return state

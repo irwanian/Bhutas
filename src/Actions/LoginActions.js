@@ -27,9 +27,16 @@ export const passwordLoginChanged = (text) => {
 }
 
 export const onUserLogout = () => {
-    localStorage.removeItem('keeplogged')
-    return {
-        type: LOGOUT_USER
+    return (dispatch) => {
+        const user = localStorage.getItem('keeplogged')
+        Axios.put(API_URL + '/users/logout?email=' + user)
+        .then((res)=> {
+            dispatch({ type: LOGOUT_USER })
+            localStorage.removeItem('keeplogged')
+        })
+        .catch((err)=> {
+            console.log(err)
+        })
     }
 }
 
@@ -42,12 +49,13 @@ export const loginUser = ({ email, password }) => {
         }else{
             Axios.get(API_URL + '/users/user?email=' + email)
             .then((res)=> {
-                // console.log(res.data);
+                console.log(password)
+                console.log(res.data);
                 if(res.data.length === 0 ){
                     dispatch({type: LOGIN_USER_FAIL, payload: 'Email is Not Registered'})
                 }else if(res.data[0].status === 0 ){
                     dispatch({type: LOGIN_USER_FAIL, payload: 'Please Verify Your Account First'})
-                // }else if(res.data[0].password !== password){
+                // }else if(password !== res.data[0].password){
                 //     dispatch({type: LOGIN_USER_FAIL, payload: 'Wrong Password'})
                 }else{
                     dispatch({type: LOGIN_USER_SUCCESS, payload: {  
@@ -55,19 +63,19 @@ export const loginUser = ({ email, password }) => {
                                                                     role_id: res.data[0].role_id,
                                                                     fullname: res.data[0].fullname,
                                                                     email: res.data[0].email,
-                                                                    password: res.data[0].password,
+                                                                    password,
                                                                     error: '',
                                                                     loading: false,
                                                                     is_login: true,
                                                                     justLogin: true
                     }})
                     Axios.post(API_URL + '/users/login', {
-                                                           email,
-                                                           password,
+                                                           email: res.data[0].email,
+                                                           password: res.data[0].password,
                                                            last_login: new Date()
                                                          })
                     .then((res)=> {
-                              localStorage.setItem('keeplogged', email)
+                              localStorage.setItem('keeplogged', res.data[0].email)
                             dispatch({type: LOGIN_USER_SUCCESS})
                     })
                     .catch((err)=> {
@@ -85,6 +93,7 @@ export const loginUser = ({ email, password }) => {
 }
 
 export const keepLogin = (kept) => {
+    console.log(kept)
     return {
         type: KEEP_LOGIN,
         payload: kept

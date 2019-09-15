@@ -1,4 +1,4 @@
-import { SEARCH_BOX_CHANGE, ADD, REDUCE } from "./Types";
+import { SEARCH_BOX_CHANGE, ADD, REDUCE, CART_ADDED } from "./Types";
 
 
 export const customerSearching = (text) => {
@@ -18,6 +18,13 @@ export const addQuantity = () => {
 export const reduceQuantity = () => {
     return {
         type: REDUCE
+    }
+}
+
+export const addedCartContent = (add) => {
+    return {
+        type: CART_ADDED,
+        payload: add
     }
 }
 
