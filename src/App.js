@@ -20,6 +20,7 @@ import CategoryManagement from './AdminPages/CategoryManagement'
 import WaitingVerification from './pages/WaitingVerification';
 import AccountVerified from './pages/AccountVerified';
 import Checkout from './pages/CheckoutPage';
+import TransactionManagement from './AdminPages/TransactionPage';
 
 class App extends React.Component{
   
@@ -62,6 +63,7 @@ class App extends React.Component{
             <Route path='/categorymanagement' component={CategoryManagement} />
             <Route path='/addnewbrand' component={AddNewBrand} />
             <Route path='/uploadproduct' component={ProductUpload} />
+            <Route path='/transaction' component={TransactionManagement} />
             <Route path='/mycart' component={CartPage} />
             <Route path='/checkout' component={Checkout} />
             <Route path ='*' component={ErrorPage} />

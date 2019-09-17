@@ -3,6 +3,14 @@
     width: 55px
 }
 
+.tab-transaction {
+    border: none;
+    padding-top: 10;
+    padding-bottom: 10;
+    padding-left: 50px;
+    padding-right: 50px
+}
+
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 270px;
@@ -13,6 +21,13 @@
   
   .form-table {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .trx-proof {
+    transition: transform .5 ease;
+  }
+  .trx-proof:hover {
+      transform: scale(2.0)
   }
 
   .product-image-detail img{

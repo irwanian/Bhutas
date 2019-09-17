@@ -3,6 +3,7 @@ import NewArrivals from '../components/SliderNewArrivals';
 import Axios from 'axios';
 import { API_URL } from '../Helpers/API_URL';
 import numeral from 'numeral'
+import { Redirect } from 'react-router-dom'
 import { Spinner } from 'reactstrap'
 import { connect } from 'react-redux';
 import { addQuantity, reduceQuantity } from '../Actions'
@@ -77,9 +78,7 @@ handleSizeChange = (e) => {
 renderAddBtnOrLoading = () => {
     if(this.state.loading === false){
         return(
-            <a href={'/mycart/' + this.props.userId } >
                 <input type='button' value='ADD TO CART' onClick={this.onAddToCartButtonClick}  className='btn btn-dark mt-4' />
-            </a>
         )
     }
     return <Spinner color='dark' style={{fontSize: '26px'}} /> 
@@ -90,6 +89,8 @@ onAddToCartButtonClick = () => {
     
     if(this.props.count === 0){
         this.setState({ errorMessage: 'Please Select Shoe Size and Quantity!', loading: false })
+    }else if(this.props.checkout > 0){
+        this.setState({ errorMessage: 'Please Complete Your Payment First', loading: false })
     }else{
 
         const price = this.state.productDetail[0].price
@@ -104,10 +105,11 @@ onAddToCartButtonClick = () => {
             product_id: Number(this.props.location.pathname.split('/')[2]),
             user_id: Number(this.props.userId),
             qty: this.props.count,
-            price,
+            price: price - (price * discount/100),
             total_price,
             size: selectedStock
-        }
+        } 
+        console.log(data)
         Axios.post(API_URL + '/transaction/addtocart', data)
         .then((res)=> {
             console.log(res.data)
@@ -121,61 +123,65 @@ onAddToCartButtonClick = () => {
 
 renderProductDetail = () => {
     return this.state.productDetail.map((val) => {
-        return(
-            <div className='row mt-5'>
-                <div className='col-md-6 mt-5 product-image-detail'>
-                    <img src={API_URL + val.picture} className='img-fluid' alt={val.productname} style={{width :450, height: 450, border : '1.5px solid blue', marginBottom:'20px'}} />
-                </div>
-                            
-                    <div className='col-md-6'>
-                    <img src={API_URL + val.logo}  alt={val.brand} style={{width:'150px'}}/>
-                    
-                    <h1>{val.productname.toUpperCase()}</h1>
-                    <h4>{val.category.toUpperCase()}</h4>
-                    <span>
-                        { val.discount > 0 ?    
-                        <strike >{'Rp. ' + numeral(val.price).format(0,0)}</strike>
-                        : null }
-                        <h5 style={{color : 'red'}}>{'Rp. ' + numeral(val.price - val.price * (val.discount/100)).format(0,0)} </h5>  {/* Harga final diakses melalui global state, sehingga harga berubah mengikuty quantity pembelian */}
-                    </span>
-                    <p >{val.description}</p>
-                    <select name='size' id='stockProduct' onChange={this.handleSizeChange} style={{width:'150px', borderRadius:'5px', height:'30px'}}>
-                        <option ref='size' value={0} style={{fontWeight: '600'}}>SHOE SIZE</option>
-                        {val.size_46 > 0 ? <option value={val.size_46}>46 </option> : <option disabled style={{color: 'red'}} > 46 Out Of Stock</option>}
-                        {val.size_47 > 0 ? <option value={val.size_47}>47 </option> : <option disabled style={{color: 'red'}} > 47 Out Of Stock</option>}
-                        {val.size_48 > 0 ? <option value={val.size_48}>48 </option> : <option disabled style={{color: 'red'}} > 48 Out Of Stock</option>}
-                        {val.size_49 > 0 ? <option value={val.size_49}>49 </option> : <option disabled style={{color: 'red'}} > 49 Out Of Stock</option>}
-                        {val.size_50 > 0 ? <option value={val.size_50}>50 </option> : <option disabled style={{color: 'red'}} > 50 Out Of Stock</option>}
-                    </select>
-                    <span style={{marginLeft: '30px'}}> <span style={{marginRight: '20px', fontWeight: '600', fontSize: '17px'}}>QUANTITY :</span> </span>
-                    <input   type='button' className='btn btn-light mr-2' style={{fontSize: '15px', fontWeight: 'bold'}}
-                     value='-' onClick={this.onReduceButton} />
-                        <span style={{fontSize: '15px', fontWeight: 'bold'}}>{this.props.count}</span>
-                        {
-                            this.state.sizeValue > this.props.count ?
-                        <span> 
-                        <input type='button' style={{fontSize: '15px', fontWeight: 'bold'}}
-                         className='btn btn-light ml-2'onClick={this.onAddButton} value='+' />
-                        </span>
-                         : <span>
-                                <input type='button' disabled style={{fontSize: '15px', fontWeight: 'bold'}}
-                                className='btn btn-light ml-2'onClick={this.onAddButton} value='+' />
-                            </span>
-                        }
-                        
-                        <br />
-                        {this.renderAddBtnOrLoading()}
-                        
-                        {
-                            this.state.errorMessage === '' ? null :
-                            <div className=' mt-3 classname alert alert-danger'>
-                                {this.state.errorMessage}
-                            </div>
-                        }
+        if(this.state.addToCartSuccess === true) return <Redirect to={'/mycart/' + this.props.userId} />
 
+        else{
+            return(
+             <div className='row mt-5'>
+                    <div className='col-md-6 mt-5 product-image-detail'>
+                        <img src={API_URL + val.picture} className='img-fluid' alt={val.productname} style={{width :450, height: 450, border : '1.5px solid blue', marginBottom:'20px'}} />
                     </div>
-                    </div>
-        )
+                                
+                        <div className='col-md-6'>
+                        <img src={API_URL + val.logo}  alt={val.brand} style={{width:'150px'}}/>
+                        
+                        <h1>{val.productname.toUpperCase()}</h1>
+                        <h4>{val.category.toUpperCase()}</h4>
+                        <span>
+                            { val.discount > 0 ?    
+                            <strike >{'Rp. ' + numeral(val.price).format(0,0)}</strike>
+                            : null }
+                            <h5 style={{color : 'red'}}>{'Rp. ' + numeral(val.price - val.price * (val.discount/100)).format(0,0)} </h5>  {/* Harga final diakses melalui global state, sehingga harga berubah mengikuty quantity pembelian */}
+                        </span>
+                        <p >{val.description}</p>
+                        <select name='size' id='stockProduct' onChange={this.handleSizeChange} style={{width:'150px', borderRadius:'5px', height:'30px'}}>
+                            <option ref='size' value={0} style={{fontWeight: '600'}}>SHOE SIZE</option>
+                            {val.size_46 > 0 ? <option value={val.size_46}>46 </option> : <option disabled style={{color: 'red'}} > 46 Out Of Stock</option>}
+                            {val.size_47 > 0 ? <option value={val.size_47}>47 </option> : <option disabled style={{color: 'red'}} > 47 Out Of Stock</option>}
+                            {val.size_48 > 0 ? <option value={val.size_48}>48 </option> : <option disabled style={{color: 'red'}} > 48 Out Of Stock</option>}
+                            {val.size_49 > 0 ? <option value={val.size_49}>49 </option> : <option disabled style={{color: 'red'}} > 49 Out Of Stock</option>}
+                            {val.size_50 > 0 ? <option value={val.size_50}>50 </option> : <option disabled style={{color: 'red'}} > 50 Out Of Stock</option>}
+                        </select>
+                        <span style={{marginLeft: '30px'}}> <span style={{marginRight: '20px', fontWeight: '600', fontSize: '17px'}}>QUANTITY :</span> </span>
+                        <input   type='button' className='btn btn-light mr-2' style={{fontSize: '15px', fontWeight: 'bold'}}
+                         value='-' onClick={this.onReduceButton} />
+                            <span style={{fontSize: '15px', fontWeight: 'bold'}}>{this.props.count}</span>
+                            {
+                                this.state.sizeValue > this.props.count ?
+                            <span> 
+                            <input type='button' style={{fontSize: '15px', fontWeight: 'bold'}}
+                             className='btn btn-light ml-2'onClick={this.onAddButton} value='+' />
+                            </span>
+                             : <span>
+                                    <input type='button' disabled style={{fontSize: '15px', fontWeight: 'bold'}}
+                                    className='btn btn-light ml-2'onClick={this.onAddButton} value='+' />
+                                </span>
+                            }
+                            
+                            <br />
+                            {this.renderAddBtnOrLoading()}
+                            
+                            {
+                                this.state.errorMessage === '' ? null :
+                                <div className=' mt-3 classname alert alert-danger'>
+                                    {this.state.errorMessage}
+                                </div>
+                            }
+    
+                        </div>
+                        </div>
+            )
+        }
     })
 }
     render(){
@@ -196,7 +202,8 @@ renderProductDetail = () => {
 const mapStateToProps = ({ auth, customer }) => {
     return {
         count: customer.productQty,
-        userId: auth.userId
+        userId: auth.userId,
+        checkout: customer.checkoutStatus
     }
 }
 

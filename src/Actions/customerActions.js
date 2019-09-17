@@ -1,4 +1,4 @@
-import { SEARCH_BOX_CHANGE, ADD, REDUCE, CART_ADDED } from "./Types";
+import { SEARCH_BOX_CHANGE, ADD, REDUCE, CART_ADDED, WAITING_PAYMENT, PAYMENT_SUCCESS_OR_FAILED } from "./Types";
 
 
 export const customerSearching = (text) => {
@@ -28,3 +28,14 @@ export const addedCartContent = (add) => {
     }
 }
 
+export const  checkingOut = () => {
+    return {
+        type: WAITING_PAYMENT
+    }
+}
+
+export const  trxPaidorCanceled = () => {
+    return {
+        type: PAYMENT_SUCCESS_OR_FAILED
+    }
+}
