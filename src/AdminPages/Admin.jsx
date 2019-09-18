@@ -109,7 +109,7 @@ class AdminPage extends React.Component{
             size_50: Number(this.refs.size50.value)
         }
 
-        Axios.patch(API_URL + '/products/stocks/' + id, data)
+        Axios.put(API_URL + '/products/stocks/' + id, data)
         .then((res)=> {
             this.setState({ openModal: false, selectedEditId: 0, stockData: res.data })
         })
@@ -132,11 +132,7 @@ class AdminPage extends React.Component{
         }
     }
 
-    onSaveEditButtonClick = (id) => {
-        const { editBrand, editCategory } = this.state
-        
-        if(editBrand === 0) return this.setState({ errorMessage: 'Please Select Product Brand'})
-        else if(editCategory === 0) return this.setState({ errorMessage: 'Please Select Product Category' })
+    onSaveEditButtonClick = (id, oldPic, brand, category) => {
         
         var formData = new FormData()
                 var headers ={
@@ -149,14 +145,15 @@ class AdminPage extends React.Component{
                     price: Number(this.refs.price.value),
                     discount: Number(this.refs.discount.value),
                     description: this.refs.description.value.toLowerCase(),
-                    brand_id: this.state.editBrand,
-                    category_id: this.state.editCategory
+                    brand_id: this.state.editBrand === 0 ? brand : this.state.editBrand,
+                    category_id: this.state.editCategory === 0 ? category : this.state.editCategory,
+                    oldPhoto: oldPic
                 }
-
+                console.log(data)
                 formData.append('image', this.state.editProductPicture)
                 formData.append('data', JSON.stringify(data))
 
-                Axios.patch(API_URL + '/products/editproduct/' + id, formData, headers)
+                Axios.put(API_URL + '/products/editproduct/' + id, formData, headers)
                 .then((res)=>{
                         this.setState({productLists : res.data})
                         console.log(res.data)
@@ -259,7 +256,7 @@ class AdminPage extends React.Component{
                                 <th scope="row">{index + 1}</th>
                                 <td>
                                     <div>
-                                    <img src={API_URL + val.picture} alt={val.productname} height={100} />
+                                    <img src={API_URL + val.picture} alt={val.productname} height={110} width={110} />
                                     </div>
                                     <div style={{fontWeight: 'bold'}}>
                                         {val.productname.toUpperCase()}
@@ -313,13 +310,13 @@ class AdminPage extends React.Component{
                                 </td>
                                 <td >
                                     <select style={{width: '100px'}} onChange={this.handleBrandChange}  >
-                                        <option value={val.brand_id}>{val.brand.toUpperCase()}</option>
+                                        <option>BRAND</option>
                                         {this.renderBrandLists()}
                                     </select>
                                 </td>
                                 <td>
                                     <select style={{width: '100px'}} onChange={this.handleCategoryChange}>
-                                        <option value={val.category_id} >{val.category.toUpperCase()}</option>
+                                        <option>CATEGORY</option>
                                         {this.renderCategoryLists()}
                                     </select>
                                 </td>
@@ -327,7 +324,8 @@ class AdminPage extends React.Component{
                                     <input disabled type='button' onClick={()=> this.onBtnStockdetail(val.product_id, index)} value='Stock Details' className='btn btn-info' />
                                 </td>
                                 <td><input type='button' onClick={()=> this.setState({ selectedEditId: 0 })} value='Cancel' className='btn btn-danger' /></td>                                                                                                                
-                                <td><input type='button' onClick={()=> this.onSaveEditButtonClick(val.product_id)} value='Save Changes' className='btn btn-success' /> </td>
+                                <td><input type='button' onClick={()=> this.onSaveEditButtonClick(val.product_id, val.picture,
+                                                                                                     val.brand_id, val.category_id)} value='Save Changes' className='btn btn-success' /> </td>
                             </tr>
             )
         })

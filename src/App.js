@@ -21,6 +21,7 @@ import WaitingVerification from './pages/WaitingVerification';
 import AccountVerified from './pages/AccountVerified';
 import Checkout from './pages/CheckoutPage';
 import TransactionManagement from './AdminPages/TransactionPage';
+import UserTransaction from './pages/UserTransaction';
 
 class App extends React.Component{
   
@@ -56,6 +57,7 @@ class App extends React.Component{
             <Route path='/products' component={ProductShowcase} />
             <Route path='/detail' component={ProductDetail} />
             <Route path='/login' component={Login} />
+            <Route path='/usertransaction' component={UserTransaction} />
             <Route path='/registration' component={Register} /> 
             <Route path='/waitingverification' component={WaitingVerification} />
             <Route path='/verified' component={AccountVerified} />

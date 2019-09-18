@@ -3,8 +3,7 @@ import NewArrivals from '../components/SliderNewArrivals';
 import Axios from 'axios';
 import { API_URL } from '../Helpers/API_URL';
 import numeral from 'numeral'
-import { Redirect } from 'react-router-dom'
-import { Spinner } from 'reactstrap'
+import { Spinner, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addQuantity, reduceQuantity } from '../Actions'
 
@@ -14,16 +13,12 @@ import { addQuantity, reduceQuantity } from '../Actions'
 class ProductDetail extends React.Component{
 state={
     productDetail: [],
-    stockData46: 0,
-    stockData47: 0,
-    stockData48: 0,
-    stockData49: 0,
-    stockData50: 0,
     sizeValue: 0,
     sizeStock: 0,
     errorMessage: '',
     addToCartSuccess: false,
-    loading: false
+    loading: false,
+    openModal: false
 }
 
 componentDidMount(){
@@ -66,8 +61,6 @@ onReduceButton = () => {
 
 
 handleSizeChange = (e) => {
-    
-
     const size = e.target.value
     console.log(size)
     if(size){
@@ -76,10 +69,18 @@ handleSizeChange = (e) => {
 }
 
 renderAddBtnOrLoading = () => {
-    if(this.state.loading === false){
+    if(this.state.loading === false && this.state.sizeValue !== 0 && this.props.count !== 0 && this.props.role !== 1){
         return(
-                <input type='button' value='ADD TO CART' onClick={this.onAddToCartButtonClick}  className='btn btn-dark mt-4' />
+            <div>
+                    <input type='button' value='ADD TO CART' onClick={this.onAddToCartButtonClick}  className='btn btn-dark mt-4' />
+            </div>
         )
+    }else if(this.state.sizeValue === 0 || this.props.count === 0){
+        return(
+            <div className='mt-3 alert alert-info'> Please Select Shoe Size and Quantity</div>
+    )
+    }else if(this.props.role === 1 ){
+        return null
     }
     return <Spinner color='dark' style={{fontSize: '26px'}} /> 
 }
@@ -113,7 +114,7 @@ onAddToCartButtonClick = () => {
         Axios.post(API_URL + '/transaction/addtocart', data)
         .then((res)=> {
             console.log(res.data)
-            this.setState({ addToCartSuccess: true, errorMessage: '' })
+            this.setState({ addToCartSuccess: true, errorMessage: '', openModal: true })
         })
         .catch((err)=>{
             console.log(err)
@@ -123,9 +124,7 @@ onAddToCartButtonClick = () => {
 
 renderProductDetail = () => {
     return this.state.productDetail.map((val) => {
-        if(this.state.addToCartSuccess === true) return <Redirect to={'/mycart/' + this.props.userId} />
 
-        else{
             return(
              <div className='row mt-5'>
                     <div className='col-md-6 mt-5 product-image-detail'>
@@ -179,9 +178,30 @@ renderProductDetail = () => {
                             }
     
                         </div>
+                        <Modal size='lg' isOpen={this.state.openModal} >
+                            <ModalHeader className='text-center' style={{fontWeight: 600}}>
+                                Product Successfully Added
+                            </ModalHeader>
+                            <ModalBody>
+                                <div className='row justify-content-between'>
+                                    <div>
+                                        <img src={API_URL + val.picture} className='img-fluid' alt={val.productname} style={{width :110, height:110}} />
+                                    </div>
+                                    <div style={{fontWeight: 500}}>{val.productname.toUpperCase()}</div>
+                                    <div>{val.qty}</div>
+                                    <div>
+                                        <a href={'/products'}>
+                                            <input type='button' className='btn btn-info mr-5' value='Continue Shopping' /> 
+                                        </a>
+                                        <a href={'/mycart/' + this.props.id}>
+                                            <input type='button' className='btn btn-success mr-5' value='View Cart' /> 
+                                        </a>
+                                    </div>
+                                </div>
+                            </ModalBody>
+                        </Modal>
                         </div>
             )
-        }
     })
 }
     render(){
@@ -203,7 +223,9 @@ const mapStateToProps = ({ auth, customer }) => {
     return {
         count: customer.productQty,
         userId: auth.userId,
-        checkout: customer.checkoutStatus
+        checkout: customer.checkoutStatus,
+        role: auth.role_id,
+        id: auth.userId
     }
 }
 

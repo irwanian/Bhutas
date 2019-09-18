@@ -1,6 +1,5 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import { Card } from 'reactstrap'
 import { connect } from 'react-redux'
 import { fullnameRegisterChanged, emailRegisterChanged, passwordRegisterChanged, conPasswordRegisterChanged, registerUser } from '../Actions';
 import { Spinner } from 'reactstrap'

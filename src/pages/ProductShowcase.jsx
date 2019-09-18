@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Axios from 'axios'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import numeral from 'numeral'
 import { API_URL } from '../Helpers/API_URL';
 import { customerSearching, searchResult } from '../Actions'

@@ -19,17 +19,18 @@ class Checkout extends React.Component{
         proofSubmitted: false
     }
 
-    componentWillReceiveProps(newProps){
-        const id = newProps.id
-            Axios.get(API_URL + '/checkout/usertransaction/' + id)
-            .then((res)=> {
-                console.log(this.state.trxId)
-                console.log(res.data)
-                this.setState({ shopList: res.data.transaction_data, trxId: res.data.transaction_id, totalTrx: res.data.total })
-            })
-            .catch((err)=> {
-                console.log(err)
-            })
+    componentDidMount(){
+        const id = this.props.location.pathname.split('/')[2]
+        
+        Axios.get(API_URL + '/checkout/usertransaction/' + id)
+        .then((res)=> {
+            console.log(this.state.trxId)
+            console.log(res.data)
+            this.setState({ shopList: res.data.transaction_data, trxId: res.data.transaction_id, totalTrx: res.data.total })
+        })
+        .catch((err)=> {
+            console.log(err)
+        })
     }
 
     onUploadTransactionChange = (e) => {
@@ -71,6 +72,7 @@ class Checkout extends React.Component{
 
 
     render(){
+        if(this.state.proofSubmitted) return <Redirect to='/' />
         return(
             <div className='container' style={{paddingTop : '50px'}} >
                 <center>

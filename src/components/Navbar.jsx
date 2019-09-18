@@ -71,7 +71,7 @@ componentWillReceiveProps = (newProps) => {
         {/* ======================DISABLE IF USER HASN'T LOGIN================================ */}
         
         {this.props.role === 1 ? null :
-        <Link to='/mycart'>
+        <Link to={'/mycart/' + this.props.id}>
           <IoIosCart className='flex-center cart-icon'/>
             {/* ==================Cart-Content-Start============= */}
             

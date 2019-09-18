@@ -4,19 +4,21 @@ import { Link } from 'react-router-dom'
 import { API_URL } from '../Helpers/API_URL'
 import { connect } from 'react-redux'
 import { addedCartContent, checkingOut } from '../Actions'
-import { Spinner } from 'reactstrap'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import numeral from 'numeral'
 
 class Cart extends React.Component {
     state = {
         cartDetail: [],
         totalQty: 0,
-        totalPrice: 0
+        totalPrice: 0,
+        openModal: false
     }
 
     componentDidMount(){
-        const id = this.props.id
+        const id = this.props.location.pathname.split('/')[2]
         if(id !== 0){
+            console.log(id)
             Axios.get(API_URL + '/transaction/usercart/' + id)
                 .then((res)=> {
                     console.log(res.data)
@@ -31,7 +33,9 @@ class Cart extends React.Component {
 
     componentWillReceiveProps(newProps){
         console.log(newProps)
-        if(this.props.id !== newProps.id){
+        console.log(newProps.id)
+        console.log(this.props.id)
+        if(newProps.id){
             console.log('pass')
             const id = newProps.id
             Axios.get(API_URL + '/transaction/usercart/' + id)
@@ -46,11 +50,11 @@ class Cart extends React.Component {
         }
     }
 
-    onDeleteCartProduct = (id) => {
+    onDeleteCartProduct = (id, user) => {
         const confirmation = window.confirm('Are You Sure?')
 
         if(confirmation){
-            Axios.put(API_URL + '/transaction/deletecart/' + id)
+            Axios.put(API_URL + '/transaction/deletecart/' + id + '/' + user)
             .then((res)=> {
                 this.setState({ cartDetail: res.data })
             })
@@ -65,6 +69,7 @@ class Cart extends React.Component {
         Axios.post(API_URL + '/transaction/addtransaction/' + this.props.id)
         .then((res)=> {
             console.log(res.data)
+            this.setState({ openModal: true })
         })
         .catch((err)=> {
             console.log(err)
@@ -110,7 +115,7 @@ class Cart extends React.Component {
                             { 'Rp. ' + numeral(val.total_price).format(0,0)}
                         </td>
                         <td>
-                            <input type='button' className='btn btn-danger' onClick={()=> this.onDeleteCartProduct(val.cart_id, index)} value='Delete' />
+                            <input type='button' className='btn btn-danger' onClick={()=> this.onDeleteCartProduct(val.cart_id, this.props.id)} value='Delete' />
                         </td>
                     </tr>
                 )
@@ -128,7 +133,7 @@ class Cart extends React.Component {
                         </div>
                         {/*===========================TABLE SECTION============================  */}
                         <div className='row justify-content-center'>
-                            <table style={{width: '90vw', backgroundColor: '#e9f0ef' }} className='text-center mt-5'>
+                            <table style={{width: '92vw', backgroundColor: '#e9f0ef' }} className='text-center mt-5'>
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -154,15 +159,25 @@ class Cart extends React.Component {
         
                             </table>
                         </div>
+                            <div className='mt-5' style={{float: 'right', marginRight: 100}} >
+                                <input type='button' onClick={this.onProceedToCheckOutBtn} className='btn btn-success' value='CONFIRM' />
+                            </div>
                         {/*===========================TABLE SECTION============================  */}
-                        <div className='row justify-content-around mt-5'>
-                            <Link to='/products' >
-                                 <input type='button'className='btn btn-dark' value='<< CONTINUE SHOPPING'/>
-                            </Link>
-                            <a href={'/checkout/' + this.props.id}>
-                                <input type='button' className='btn btn-dark' onClick={this.onProceedToCheckOutBtn} value='PROCEED TO CHECKOUT >>' />
-                            </a>
-                        </div>
+                        <Modal isOpen={this.state.openModal} toggle={()=> this.setState({ openModal: false })} >
+                            <ModalHeader>
+                                What's Next
+                            </ModalHeader>
+                            <ModalBody>
+                                <div className='row justify-content-around mt-5'>
+                                    <Link to='/products' >
+                                        <input type='button' className='btn btn-dark' value='<< CONTINUE SHOPPING'/>
+                                    </Link>
+                                    <a href={'/checkout/' + this.props.id}>
+                                        <input type='button' className='btn btn-dark' value='PROCEED TO CHECKOUT >>' />
+                                    </a>
+                                </div>
+                            </ModalBody>
+                        </Modal>
                     </div>
                 )
         }else if(this.state.cartDetail.length === 0){

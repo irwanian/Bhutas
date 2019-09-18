@@ -5,7 +5,7 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap'
-import { Link, Redirect} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {IoIosContact} from 'react-icons/io'
 import { onUserLogout } from '../Actions'
 import { connect } from 'react-redux'
@@ -43,9 +43,13 @@ import { connect } from 'react-redux'
           )
         }
         return(
-          <DropdownItem>
-             My Wishlist
-          </DropdownItem>
+          <div>
+            <a href={'/usertransaction/' + this.props.id } >
+              <DropdownItem>
+                Transaction
+              </DropdownItem>
+            </a>
+          </div>
         )
       }
    
@@ -84,7 +88,8 @@ const mapStateToProps = (state) => {
     return {
       fullname: state.auth.fullname,
       email: state.auth.email,
-      role: state.auth.role_id
+      role: state.auth.role_id,
+      id: state.auth.userId
     }
 }
 
