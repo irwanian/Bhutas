@@ -55,8 +55,6 @@ export const loginUser = ({ email, password }) => {
                     dispatch({type: LOGIN_USER_FAIL, payload: 'Email is Not Registered'})
                 }else if(res.data[0].status === 0 ){
                     dispatch({type: LOGIN_USER_FAIL, payload: 'Please Verify Your Account First'})
-                // }else if(password !== res.data[0].password){
-                //     dispatch({type: LOGIN_USER_FAIL, payload: 'Wrong Password'})
                 }else{
                     dispatch({type: LOGIN_USER_SUCCESS, payload: {  
                                                                     userId: res.data[0].id,

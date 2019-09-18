@@ -53,6 +53,14 @@ class App extends React.Component{
          <Header  />
         </div>
          <Switch>
+           {/* ================+====ADMIN============================ */}
+            <Route path='/admin' component={AdminPage} />
+            <Route path='/categorymanagement' component={CategoryManagement} />
+            <Route path='/addnewbrand' component={AddNewBrand} />
+            <Route path='/uploadproduct' component={ProductUpload} />
+            <Route path='/transaction' component={TransactionManagement} />
+            
+            {/* ==================CUSTOMER============================ */}
             <Route exact path='/' component={HomePage}/>
             <Route path='/products' component={ProductShowcase} />
             <Route path='/detail' component={ProductDetail} />
@@ -61,11 +69,6 @@ class App extends React.Component{
             <Route path='/registration' component={Register} /> 
             <Route path='/waitingverification' component={WaitingVerification} />
             <Route path='/verified' component={AccountVerified} />
-            <Route path='/admin' component={AdminPage} />
-            <Route path='/categorymanagement' component={CategoryManagement} />
-            <Route path='/addnewbrand' component={AddNewBrand} />
-            <Route path='/uploadproduct' component={ProductUpload} />
-            <Route path='/transaction' component={TransactionManagement} />
             <Route path='/mycart' component={CartPage} />
             <Route path='/checkout' component={Checkout} />
             <Route path ='*' component={ErrorPage} />

@@ -37,7 +37,7 @@ import { connect } from 'react-redux'
           return(
             <Link to='/admin'>
               <DropdownItem>
-                Admin Page
+                ADMIN PAGE
               </DropdownItem>
             </Link>
           )
@@ -46,7 +46,7 @@ import { connect } from 'react-redux'
           <div>
             <a href={'/usertransaction/' + this.props.id } >
               <DropdownItem>
-                Transaction
+                TRANSACTION
               </DropdownItem>
             </a>
           </div>
@@ -66,8 +66,10 @@ import { connect } from 'react-redux'
                     <Link style={{textDecoration:'none'}}>
                       
                       {/*=======================DISABLE IF USER HASN'T LOGIN============================== */}
-                      <DropdownItem>
-                          {this.props.fullname}
+                      <DropdownItem disabled >
+                          {
+                            this.props.fullname ? this.props.fullname.toUpperCase() : null
+                          }
                       </DropdownItem>
                       {/*=======================DISABLE IF USER HASN'T LOGIN============================== */}
 

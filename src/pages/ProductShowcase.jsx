@@ -92,7 +92,7 @@ class ProductShowcase extends Component {
     renderAllProducts = () => {
         return this.state.allProducts.map((val, index) => {
             return (
-                <div key={index} className="card" style={{marginTop: '20px'}}>
+                <div key={index} className="card" style={{marginTop: '20px', marginRight: 20}}>
                     <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
@@ -117,7 +117,7 @@ class ProductShowcase extends Component {
     renderSearchProducts = () => {
         return this.state.searchResult.map((val, index) => {
             return (
-                <div key={index} className="card" style={{marginTop: '20px'}}>
+                <div key={index} className="card" style={{marginTop: '20px', marginRight: 20}}>
                     <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
@@ -142,7 +142,7 @@ class ProductShowcase extends Component {
     renderSaleProducts = () => {
         return this.state.saleProducts.map((val, index) => {
             return (
-                <div key={index} className="card" style={{marginTop: '20px'}}>
+                <div key={index} className="card" style={{marginTop: '20px', marginRight: 20}}>
                     <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
@@ -167,7 +167,7 @@ class ProductShowcase extends Component {
     renderProductsFromCategory = () => {
         return this.state.productsFromCategory.map((val, index) => {
             return (
-                <div key={index} className="card" style={{marginTop: '20px'}}>
+                <div key={index} className="card" style={{marginTop: '20px', marginRight: 20}}>
                     <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
@@ -192,7 +192,7 @@ class ProductShowcase extends Component {
     renderProductsFromBrand = () => {
         return this.state.productsFromBrand.map((val, index) => {
             return (
-                <div key={index} className="card" style={{marginTop: '20px'}}>
+                <div key={index} className="card" style={{marginTop: '20px', marginRight: 20}}>
                     <a style={{textDecoration: 'none'}}  href={'/detail/' + val.product_id}>
                         
                         {val.discount > 0 ? 
@@ -217,9 +217,9 @@ class ProductShowcase extends Component {
     render () {
         if(this.routeCondition() === 'onsale'){
             return (
-                <div >
+                <div className='container'>
                     <center>
-                        <div className='container row' style={{paddingTop: '140px'}}>
+                        <div className='row d-flex justify-content-center' style={{paddingTop: '140px'}}>
                             {this.renderSaleProducts()}                                       
                         </div>
                     </center>
@@ -228,9 +228,9 @@ class ProductShowcase extends Component {
         }
         else if(this.routeCondition() === 'brands'){
             return (
-                <div >
+                <div className='container'>
                     <center>
-                        <div className='container row' style={{paddingTop: '140px'}}>
+                        <div className='row d-flex justify-content-center' style={{paddingTop: '140px'}}>
                             {this.renderProductsFromBrand()}
                         </div>
                     </center>
@@ -238,9 +238,9 @@ class ProductShowcase extends Component {
             )
         }else if(this.routeCondition() === 'categories'){                
             return (
-                <div >
+                <div className='container'>
                     <center>
-                        <div className='container row' style={{paddingTop: '140px'}}>
+                        <div className='row d-flex justify-content-center' style={{paddingTop: '140px'}}>
                             {this.renderProductsFromCategory()}                                       
                         </div>
                     </center>
@@ -248,9 +248,9 @@ class ProductShowcase extends Component {
             )
         }else if(this.routeCondition() === 'searching'){
             return(
-                <div >
+                <div className='container'>
                     <center>
-                        <div className='container row' style={{paddingTop: '140px'}}>
+                        <div className='row d-flex justify-content-center' style={{paddingTop: '140px'}}>
                             {this.renderSearchProducts()}                                       
                         </div>
                     </center>
@@ -259,9 +259,9 @@ class ProductShowcase extends Component {
         }
         else{
             return(
-                <div >
+                <div className='container'>
                     <center>
-                        <div className='container row' style={{paddingTop: '140px'}}>
+                        <div className='row d-flex justify-content-center' style={{paddingTop: '140px'}}>
                             {this.renderAllProducts()}
                             {console.log(this.props.location.search)}
                         </div>

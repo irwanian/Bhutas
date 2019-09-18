@@ -2,12 +2,15 @@ import React from 'react'
 import Axios from 'axios'
 import { API_URL } from '../Helpers/API_URL'
 import numeral from 'numeral'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 
 
 class UserTransaction extends React.Component{
     state = {
         unReceivedItems: [],
-        finishLoading: false
+        finishLoading: false,
+        trxDetail: [],
+        openModal: false,
     }
     
        componentDidMount(){
@@ -35,6 +38,30 @@ class UserTransaction extends React.Component{
             })
         }
     }
+
+    transactionDetail = (id) => {
+        Axios.get(API_URL + '/checkout/detail/' + id)
+        .then((res)=>{
+            this.setState({ trxDetail: res.data, openModal: true, finishLoading: false })
+        })
+        .catch((err)=> {
+            console.log(err)
+          })
+      }
+
+      renderTrxDetail = () => {
+        return this.state.trxDetail.map((val)=> {
+            return(
+          <tr key={val.id} >
+             <td>{val.productname.toUpperCase()}</td>
+             <td><img width={130} height={130} src={API_URL + val.picture} alt={val.productname} /></td>
+             <td>{'Rp. ' + numeral(val.price).format(0.0)}</td>
+             <td>{numeral(val.qty).format(0.0) + ' pcs'}</td>
+             <td>{'Rp. ' + numeral(val.total_price).format(0.0)}</td> 
+          </tr>
+        )
+    })
+}
 
     onConfirmDelivery = (id) => {
         Axios.put(API_URL + '/checkout/received/' + id)
@@ -73,6 +100,10 @@ class UserTransaction extends React.Component{
                             <div style={{ marginBottom: 10 }}>TOTAL PRICE:</div> 
                             <div>{'Rp. ' + numeral(val.total_price).format(0,0)}</div>
                         </div>
+                        <div style={{paddingLeft: 20}} >
+                            <div style={{ marginBottom: 10 }}>TRANSACTION DETAIL:</div> 
+                            <div><input type='button' className='btn btn-info' onClick={()=> this.transactionDetail(val.transaction_id)} value='Transaction Detail' /></div>
+                        </div>
                         { val.status === 5 ?
                         <div style={{paddingLeft: 20}} >
                             <div style={{ marginBottom: 10 }}>CONFIRMATION:</div> 
@@ -81,6 +112,25 @@ class UserTransaction extends React.Component{
                         </div> : null
                     }
                     </div>
+                    <Modal size='lg' isOpen={this.state.openModal} toggle={()=> this.setState({ openModal: false })}>
+                        <ModalHeader>
+                            <h6>Transaction Detail</h6>
+                        </ModalHeader>
+                        <ModalBody>
+                        <table>
+                            <thead>
+                                <td>Product</td>
+                                <td>Image</td>
+                                <td>Price</td>
+                                <td>Qty</td>
+                                <td>Total Price</td>
+                            </thead>
+                            <tbody>
+                                {this.renderTrxDetail()}
+                            </tbody>
+                        </table>
+                        </ModalBody>
+                    </Modal>
                 </div>
             )
         })

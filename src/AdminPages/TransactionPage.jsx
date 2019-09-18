@@ -19,21 +19,24 @@ class TransactionManagement extends React.Component {
     };
 
     componentDidMount(){
-        Axios.get(API_URL + '/checkout/waiting')
-        .then((res)=> {
-            console.log(res.data)
-            this.setState({ transactionData: res.data, dataLoaded: true  })
-        })
-        .catch((err)=> {
-            console.log(err)
-        })
-        Axios.get(API_URL + '/checkout/unsent')
-        .then((res)=> {
-            this.setState({ unsentItems: res.data, dataLoaded: true})
-        })
-        .catch((err)=> {
-            console.log(err)
-        })
+        if(this.state.activeTab === '1'){
+            Axios.get(API_URL + '/checkout/waiting')
+            .then((res)=> {
+                console.log(res.data)
+                this.setState({ transactionData: res.data, dataLoaded: true  })
+            })
+            .catch((err)=> {
+                console.log(err)
+            })
+        }else if(this.state.activeTab === '2'){
+            Axios.get(API_URL + '/checkout/unsent')
+            .then((res)=> {
+                this.setState({ unsentItems: res.data, dataLoaded: true})
+            })
+            .catch((err)=> {
+                console.log(err)
+            })
+        }
         Axios.get(API_URL + '/checkout/admin-history')
         .then((res)=> {
             this.setState({ finishedTransaction: res.data, dataLoaded: true})
@@ -43,17 +46,6 @@ class TransactionManagement extends React.Component {
         })
     }
     
-    // componentDidUpdate(){
-    //     if(this.state.dataLoaded === true){
-    //         Axios.get(API_URL + '/checkout/unsent')
-    //         .then((res)=> {
-    //             this.setState({ unsentItems: res.data, dataLoaded: true})
-    //         })
-    //         .catch((err)=> {
-    //             console.log(err)
-    //         })
-    //     }
-    // }
 
     renderUnsentItems = () => {
         return this.state.unsentItems.map((val, index)=> {
@@ -63,7 +55,7 @@ class TransactionManagement extends React.Component {
                     <td>{'TRX' + val.id}</td>
                     <td>{val.fullname.toUpperCase()}</td>
                     <td>{val.date ? val.date.split('T').join(' ').split('.')[0] : null}</td>
-                    <td><img src={API_URL + val.proof} alt={val.id} width={200} className='trx-proof' /></td>
+                    <td><img src={API_URL + val.proof} alt={val.id} width={120} height={120} className='trx-proof' /></td>
                     <td><h6> Payment Approved </h6></td>
                     <td><input type='button' className='btn btn-info'  onClick={()=> this.transactionDetail(val.id)} value='Items Detail' /> </td>
                     <td><input type='button' className='btn btn-success' onClick={()=> this.deliverItems(val.id, index)} value='Items Sent' /> </td>
@@ -76,15 +68,15 @@ class TransactionManagement extends React.Component {
     renderTrxReport = () => {
         return this.state.finishedTransaction.map((val, index)=> {
             return(
-                <tr key={val.id}>
+                <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{'TRX' + val.id}</td>
                     <td>{val.fullname.toUpperCase()}</td>
                     <td>{val.date ? val.date.split('T').join(' ').split('.')[0] : null}</td>
-                    <td><img src={API_URL + val.proof} alt={val.id} width={200} className='trx-proof' /></td>
-            <td> {val.status === 5 ? <h6 style={{color: 'red'}}>Delivery Pending</h6> : <h6 style={{color: 'green'}}>Items Delivered </h6>}</td>
+                    <td><img src={API_URL + val.proof} alt={val.id} width={120} height={120} className='trx-proof' /></td>
+                    <td> {val.status === 5 ? <h6 style={{color: 'red'}}>Delivery Pending</h6> :
+                    <h6 style={{color: 'green'}}>Transaction Success </h6>}</td>
                     <td><input type='button' className='btn btn-info'  onClick={()=> this.transactionDetail(val.id)} value='Items Detail' /> </td>
-                    <td><input type='button' className='btn btn-success' onClick={()=> this.deliverItems(val.id, index)} value='Items Sent' /> </td>
                 </tr>
             )
         })
@@ -160,7 +152,7 @@ deliverItems = (id) => {
                 <td>{'TRX' + val.id}</td>
                 <td>{val.fullname.toUpperCase()}</td>
                 <td>{val.date ? val.date.split('T').join(' ').split('.')[0] : null}</td>
-                <td><img src={API_URL + val.proof} alt={val.id} width={140} height={180} className='trx-proof' /></td>
+                <td><img src={API_URL + val.proof} alt={val.id} width={120} height={120} className='trx-proof' /></td>
                 <td><h6> Waiting Approval </h6></td>
                 <td><input type='button' className='btn btn-info' onClick={()=> this.transactionDetail(val.id)} value='Transaction Detail' /> </td>
                 <td><input type='button' className='btn btn-success' onClick={()=> this.approvePaymentButton(val.id, index)} value='Approve' /> </td>
@@ -263,7 +255,6 @@ deliverItems = (id) => {
                                 <th style={{paddingRight:30}}>Proof of Transaction</th>
                                 <th style={{paddingRight:30}}>Status</th>
                                 <th style={{paddingRight:30}}>Detail</th>
-                                <th style={{paddingRight:30}}>Action</th>
                             </thead>
                             <tbody>
                                 {this.renderTrxReport()}
