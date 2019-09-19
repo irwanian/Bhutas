@@ -4,7 +4,7 @@ import { API_URL } from '../Helpers/API_URL'
 import { connect } from 'react-redux'
 import { FiClock } from 'react-icons/fi'
 import { Redirect } from 'react-router-dom'
-import { CustomInput, Spinner } from 'reactstrap'
+import { CustomInput, Spinner, Modal, ModalBody, ModalHeader } from 'reactstrap'
 import numeral from 'numeral'
 
 class Checkout extends React.Component{
@@ -16,7 +16,8 @@ class Checkout extends React.Component{
         transactionUploaderName: 'Select Proof Of Transaction Image... ',
         loading: false,
         errorMessage: '',
-        proofSubmitted: false
+        proofSubmitted: false,
+        openModal: false
     }
 
     componentDidMount(){
@@ -66,7 +67,7 @@ class Checkout extends React.Component{
             .catch((err)=>{
                 console.log(err);
             })
-            this.setState({ errorMessage: '', loading: false, proofSubmitted: true})
+            this.setState({ errorMessage: '', loading: false, openModal: true})
         }
 }
 
@@ -115,7 +116,12 @@ class Checkout extends React.Component{
                     </div >
                 }
                 </center>
-                
+                <Modal size='sm' isOpen={this.state.openModal} toggle={()=> this.setState({ proofSubmitted: true, openModal: false})} >
+                    <ModalHeader> <h6> Thank You... </h6> </ModalHeader>
+                    <ModalBody>
+                        <p style={{fontWeight: 600}} >Please Check Your Transaction Tab To Track Your Order.</p>
+                    </ModalBody>
+                </Modal>
             </div>
         )
     }

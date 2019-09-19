@@ -25,8 +25,9 @@ class AdminPage extends React.Component{
     }
 
     componentDidMount(){
-        Axios.get(API_URL + '/products/allproducts')
+        Axios.get(API_URL + '/products/adminproducts')
         .then((res)=> {
+            console.log(res.data)
             this.setState({ productLists: res.data})
         })
         .catch((err)=> {

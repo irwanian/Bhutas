@@ -1,5 +1,6 @@
 import React from 'react'
 import NewArrivals from '../components/SliderNewArrivals';
+import { Link } from 'react-router-dom'
 import Axios from 'axios';
 import { API_URL } from '../Helpers/API_URL';
 import numeral from 'numeral'
@@ -15,6 +16,11 @@ state={
     productDetail: [],
     sizeValue: 0,
     sizeStock: 0,
+    stockData46: 0,
+    stockData47: 0,
+    stockData48: 0,
+    stockData49: 0,
+    stockData50: 0,
     errorMessage: '',
     addToCartSuccess: false,
     loading: false,
@@ -59,7 +65,6 @@ onReduceButton = () => {
 }
 
 
-
 handleSizeChange = (e) => {
     const size = e.target.value
     console.log(size)
@@ -69,7 +74,16 @@ handleSizeChange = (e) => {
 }
 
 renderAddBtnOrLoading = () => {
-    if(this.state.loading === false && this.state.sizeValue !== 0 && this.props.count !== 0 && this.props.role !== 1){
+
+    if(this.props.id === 0){
+        return (
+            <Link to='/login'>
+                <input type='button' value='Go To Login Page' className='btn btn-dark mt-4'  />
+            </Link>
+        )
+
+    }
+    else if(this.state.loading === false && this.state.sizeValue !== 0 && this.props.count !== 0 && this.props.role !== 1){
         return(
             <div>
                     <input type='button' value='ADD TO CART' onClick={this.onAddToCartButtonClick}  className='btn btn-dark mt-4' />
@@ -79,7 +93,7 @@ renderAddBtnOrLoading = () => {
         return(
             <div className='mt-3 alert alert-info'> Please Select Shoe Size and Quantity</div>
     )
-    }else if(this.props.role === 1 ){
+        }else if(this.props.role === 1 ){
         return null
     }
     return <Spinner color='dark' style={{fontSize: '26px'}} /> 

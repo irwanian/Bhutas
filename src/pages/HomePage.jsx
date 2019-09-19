@@ -5,6 +5,7 @@ import NewArrivals from '../components/SliderNewArrivals';
 import { Link } from 'react-router-dom'
 import numeral from 'numeral'
 import Axios from 'axios';
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import { API_URL } from '../Helpers/API_URL';
 
 
@@ -12,23 +13,39 @@ import { API_URL } from '../Helpers/API_URL';
 class HomePage extends React.Component{
     state = {
         products: [],
-        currentPage: 0,
-        porductPerPage: 6,
         totalPages: 0,
+        pages: 0,
+        currPage: 1
     }
 
     componentDidMount(){
-        Axios.get(API_URL + '/products/allproducts')
+        const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1] : 1 
+        console.log(page)
+        Axios.get(API_URL + '/products/allproducts?page=' + page)
         .then((res)=> {
-            this.setState({ products: res.data })
+            console.log(res)
+            this.setState({ products: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages  })
         })
         .catch((err)=> {
             console.log(err)
         })
     }
 
-    productsLimiter = (count) => {
-
+    renderPagination = () => {
+        let totalButton = []
+        let listData = this.state.totalPages
+        let totalPages = Math.ceil(listData / 6)
+        for(var i = 1; i <= totalPages; i++){
+            totalButton.push(<PaginationItem className='mr-2'>
+                                <PaginationLink href={'/?page=' + (i)}>
+                                    {i}
+                                </PaginationLink>
+                            </PaginationItem>)
+                            console.log(i)
+        }
+        console.log(totalPages)
+        console.log(totalButton)
+        return totalButton
     }
 
     renderAllProducts = () => {
@@ -69,8 +86,12 @@ class HomePage extends React.Component{
                     <div className='row d-flex justify-content-center' >
                         {this.renderAllProducts()}
                     </div>
+                    <Pagination
+                    className='mt-4' aria-label="Page navigation example">
+                                    {this.renderPagination()}
+                    </Pagination>
                 </div>
-                <div>
+                <div className='pt-3'>
                     <FooterPage   />
                 </div>
             </div>

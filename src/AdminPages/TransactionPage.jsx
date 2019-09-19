@@ -1,6 +1,7 @@
 import React from 'react'
 import AdminSidePanel from './AdminSidePanel'
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink,
+         Row, Col, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import classnames from 'classnames';
 import Axios from 'axios';
 import { API_URL } from '../Helpers/API_URL';
@@ -19,7 +20,6 @@ class TransactionManagement extends React.Component {
     };
 
     componentDidMount(){
-        if(this.state.activeTab === '1'){
             Axios.get(API_URL + '/checkout/waiting')
             .then((res)=> {
                 console.log(res.data)
@@ -28,24 +28,7 @@ class TransactionManagement extends React.Component {
             .catch((err)=> {
                 console.log(err)
             })
-        }else if(this.state.activeTab === '2'){
-            Axios.get(API_URL + '/checkout/unsent')
-            .then((res)=> {
-                this.setState({ unsentItems: res.data, dataLoaded: true})
-            })
-            .catch((err)=> {
-                console.log(err)
-            })
-        }
-        Axios.get(API_URL + '/checkout/admin-history')
-        .then((res)=> {
-            this.setState({ finishedTransaction: res.data, dataLoaded: true})
-        })
-        .catch((err)=> {
-            console.log(err)
-        })
     }
-    
 
     renderUnsentItems = () => {
         return this.state.unsentItems.map((val, index)=> {
@@ -74,21 +57,38 @@ class TransactionManagement extends React.Component {
                     <td>{val.fullname.toUpperCase()}</td>
                     <td>{val.date ? val.date.split('T').join(' ').split('.')[0] : null}</td>
                     <td><img src={API_URL + val.proof} alt={val.id} width={120} height={120} className='trx-proof' /></td>
-                    <td> {val.status === 5 ? <h6 style={{color: 'red'}}>Delivery Pending</h6> :
-                    <h6 style={{color: 'green'}}>Transaction Success </h6>}</td>
+                    <td> 
+                        {val.status === 4 ? <h6 style={{color: 'red'}}> Payment Rejected!! </h6> : null}
+                        {val.status === 5 ? <h6 style={{color: 'blue'}}> Delivery Confirmation Pending </h6> : null}
+                        {val.status === 6 ? <h6 style={{color: 'green'}}> Transaction Success!! </h6> : null}
+                    </td>
                     <td><input type='button' className='btn btn-info'  onClick={()=> this.transactionDetail(val.id)} value='Items Detail' /> </td>
                 </tr>
             )
         })
     }
     
-    toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-          activeTab: tab
-      });
+    onUnsentTabClick = () => {
+        Axios.get(API_URL + '/checkout/unsent')
+            .then((res)=> {
+                console.log(res.data)
+                console.log()
+                this.setState({ unsentItems: res.data, activeTab: '2'})
+            })
+            .catch((err)=> {
+                console.log(err)
+            })
     }
-  }
+
+    onTransactionHistoryTabClick = () => {
+        Axios.get(API_URL + '/checkout/admin-history')
+        .then((res)=> {
+            this.setState({ finishedTransaction: res.data, activeTab: '3'})
+        })
+        .catch((err)=> {
+            console.log(err)
+        })
+    }
 
   transactionDetail = (id) => {
       Axios.get(API_URL + '/checkout/detail/' + id)
@@ -172,7 +172,7 @@ deliverItems = (id) => {
                 <NavItem>
                     <NavLink
                     className={classnames({ active: this.state.activeTab === '1' })}
-                    onClick={() =>  this.toggle('1') }
+                    onClick={() =>  this.setState({ activeTab: '1'}) }
                     >
                     <h6>Transaction Approval</h6>
                     </NavLink>
@@ -180,7 +180,7 @@ deliverItems = (id) => {
                 <NavItem>
                     <NavLink
                     className={classnames({ active: this.state.activeTab === '2' })}
-                    onClick={() =>  this.toggle('2') }
+                    onClick={ this.onUnsentTabClick }
                     >
                     <h6>Send Items</h6>
                     </NavLink>
@@ -189,7 +189,7 @@ deliverItems = (id) => {
                 <NavItem className='bg-transparent'>
                     <NavLink
                     className={classnames({ active: this.state.activeTab === '3' })}
-                    onClick={() =>  this.toggle('3') }
+                    onClick={this.onTransactionHistoryTabClick}
                     >
                     <h6>Transaction Report</h6>
                     </NavLink>

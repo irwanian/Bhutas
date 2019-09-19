@@ -32,7 +32,7 @@ class ProductShowcase extends Component {
     }
 
     getAllProducts = () => {
-        Axios.get(API_URL+ '/products/allproducts')
+        Axios.get(API_URL+ '/products/adminproducts')
         .then((res)=> {
             this.setState({allProducts: res.data})
         })
